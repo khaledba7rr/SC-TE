@@ -1,0 +1,20 @@
+{
+    "name": "bahr/backend",
+    "autoload": {
+        "psr-4": {
+            "Bahr\\Backend\\": "src/",
+            "Database\\": "src/Database/",
+            "Model\\": "src/Model"
+        }
+    },
+    "authors": [
+        {
+            "name": "khaled-bahr",
+            "email": "khaledbahr213@gmail.com"
+        }
+    ],
+    "require": {
+        "webonyx/graphql-php": "^15.20",
+        "vlucas/phpdotenv": "^5.6"
+    }
+}

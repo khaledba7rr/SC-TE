@@ -1,0 +1,51 @@
+type Query {
+  products: [Product!]!
+  categories: [Category!]!
+  product(id: String!): Product
+}
+
+type Product {
+  id: ID!
+  name: String!
+  description: String!
+  in_stock : Boolean!
+  category_id: ID!
+  brand: String!
+  category: Category!
+  attributes: [Attribute]
+  images: [Image!]
+  prices: [ProductPrice]!
+}
+
+type Category {
+  id: ID!
+  name: String!
+  products: [Product!]!
+}
+
+type Image {
+  id: ID!
+  product_id: String!
+  url: String!
+}
+
+type ProductPrice {
+  id: ID!
+  product_id  : String!
+  currency: String!
+  price: Float!
+  symbol: String!
+}
+
+
+type Attribute {
+  name : String!
+  type : String!
+  values: [AttributeValue!]!
+}
+
+type AttributeValue {
+  id: ID!
+  value: String!
+  displayValue: String!
+}
