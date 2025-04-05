@@ -10,6 +10,7 @@ class ComposerStaticInit08e77ad7fb49ea9c6db221b4b82fd31b
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
+        '253c157292f75eb38082b5acb06f3f01' => __DIR__ . '/..' . '/nikic/fast-route/src/functions.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -32,10 +33,18 @@ class ComposerStaticInit08e77ad7fb49ea9c6db221b4b82fd31b
             'GraphQL\\' => 8,
             'GrahamCampbell\\ResultType\\' => 26,
         ),
+        'F' => 
+        array (
+            'FastRoute\\' => 10,
+        ),
         'D' => 
         array (
             'Dotenv\\' => 7,
             'Database\\' => 9,
+        ),
+        'C' => 
+        array (
+            'Controller\\' => 11,
         ),
         'B' => 
         array (
@@ -72,6 +81,10 @@ class ComposerStaticInit08e77ad7fb49ea9c6db221b4b82fd31b
         array (
             0 => __DIR__ . '/..' . '/graham-campbell/result-type/src',
         ),
+        'FastRoute\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/nikic/fast-route/src',
+        ),
         'Dotenv\\' => 
         array (
             0 => __DIR__ . '/..' . '/vlucas/phpdotenv/src',
@@ -79,6 +92,10 @@ class ComposerStaticInit08e77ad7fb49ea9c6db221b4b82fd31b
         'Database\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/Database',
+        ),
+        'Controller\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/Controller',
         ),
         'Bahr\\Backend\\' => 
         array (

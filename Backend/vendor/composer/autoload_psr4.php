@@ -13,7 +13,9 @@ return array(
     'Model\\' => array($baseDir . '/src/Model'),
     'GraphQL\\' => array($vendorDir . '/webonyx/graphql-php/src'),
     'GrahamCampbell\\ResultType\\' => array($vendorDir . '/graham-campbell/result-type/src'),
+    'FastRoute\\' => array($vendorDir . '/nikic/fast-route/src'),
     'Dotenv\\' => array($vendorDir . '/vlucas/phpdotenv/src'),
     'Database\\' => array($baseDir . '/src/Database'),
+    'Controller\\' => array($baseDir . '/src/Controller'),
     'Bahr\\Backend\\' => array($baseDir . '/src'),
 );
