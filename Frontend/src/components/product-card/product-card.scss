@@ -1,0 +1,22 @@
+.card-body {
+  .card-product-price,
+  .card-product-name {
+    font-size: 18px;
+    font-weight: 400;
+  }
+
+  .card-product-name {
+    font-weight: 300;
+  }
+}
+
+.card {
+  border: none !important;
+  outline: none;
+  .card-img-top {
+    width: 100%; /* Ensures the image takes up the full width of the card */
+    height: auto; /* Maintains aspect ratio */
+    object-fit: fill;
+    aspect-ratio: 3/2;
+  }
+}
