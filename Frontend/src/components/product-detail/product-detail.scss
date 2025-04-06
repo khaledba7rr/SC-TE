@@ -31,12 +31,11 @@
         .attribute-swatch {
           height: 32px;
           width: 32px;
+          padding: 0;
         }
-        
-        .attribute-swatch.selected {
-          border: 2px solid green;
-          border-radius: 80%; /* Round swatch */
-          transition: transform 0.5s ease-in-out;
+
+        .swatch-container:has(.attribute-swatch.selected) {
+          border: 1px solid green;
         }
       }
     }

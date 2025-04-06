@@ -22,14 +22,16 @@ export const getAttributeValues = (type: 'text' | 'swatch', attributeValues: Att
     return (
       <div className="attribute-values-swatch d-flex flex-wrap">
         {attributeValues.map((value: AttributeValue, index) => (
-          <div
-            key={value.id}
-            className={`attribute-swatch m-1 ${index == 0 && 'selected'}`}
-            style={{
-              backgroundColor: value.value,
+          <div className="swatch-container" key={value.id}>
+              <div
+              key={value.id}
+              className={`attribute-swatch m-1 ${index == 0 && 'selected'} `}
+              style={{
+                backgroundColor: value.value,
 
-            }}
-          />
+              }}
+              />
+          </div>
         ))}
       </div>
     );

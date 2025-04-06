@@ -51,7 +51,7 @@ function App() {
             {
               id: 2,
               value: "Value 2",
-              displayValue : "Display1",
+              displayValue : "Display2",
             }
           ],
         },
