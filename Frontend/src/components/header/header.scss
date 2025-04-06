@@ -1,0 +1,22 @@
+header {
+  .navbar-collapse {
+    .nav-item {
+      .active {
+        border-bottom: 2px solid #5ece7b;
+      }
+    }
+  }
+}
+
+.header__logo {
+  .dropdown {
+    .dropdown-toggle::after {
+      content: none;
+    }
+    .dropdown-toggle.show,
+    .dropdown-toggle:hover {
+      border: none;
+      outline: none;
+    }
+  }
+}
