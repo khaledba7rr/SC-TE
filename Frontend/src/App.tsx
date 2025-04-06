@@ -1,6 +1,9 @@
 import Header from "./components/header/header.tsx"
 import Product from "./types/product.tsx"
-import ProductsListing from "./views/ProductsListing/products-listing.tsx"
+import NotFound from "./views/NotFound/not-found.tsx";
+import ProductsListingPage from "./views/ProductsListing/products-listing-page.tsx"
+import ProductDetailsPage from "./views/product-details/product-details-page.tsx"
+import {Routes, Route } from 'react-router-dom';
 
 function App() {
 
@@ -26,11 +29,11 @@ function App() {
         },
         {
           id: 2,
-          imageUrl: "https://picsum.photos/200/300",
+          imageUrl: "https://picsum.photos/100/200",
         },
         {
           id: 3,
-          imageUrl: "https://picsum.photos/200/300",
+          imageUrl: "https://picsum.photos/300/400",
         }
       ],
       categoryId: 1,
@@ -43,12 +46,29 @@ function App() {
             {
               id: 1,
               value: "Value 1",
-              displayValue : "Display Value 1",
+              displayValue : "Display1",
             },
             {
               id: 2,
               value: "Value 2",
-              displayValue : "Display Value 2",
+              displayValue : "Display1",
+            }
+          ],
+        },
+        {
+          id: 2,
+          name: "Color",
+          type : "swatch",
+          values: [
+            {
+              id: 1,
+              value: "#FF0000",
+              displayValue : "Red",
+            },
+            {
+              id: 2,
+              value: "#00FF00",
+              displayValue : "Col",
             }
           ],
         },
@@ -110,7 +130,7 @@ function App() {
       }
     },
         {
-      id: "PROD01",
+      id: "PROD03",
       brand : "Brand 1",
       name: "Product 1",
       in_stock : true,
@@ -212,7 +232,7 @@ function App() {
       }
     },
         {
-      id: "PROD01",
+      id: "PROD04",
       brand : "Brand 3",
       name: "Product 3",
       in_stock : false,
@@ -263,7 +283,7 @@ function App() {
       }
     },
     {
-      id: "PROD02",
+      id: "PROD05",
       brand : "Brand 5",
       name: "Product 5",
       in_stock : true,
@@ -318,10 +338,15 @@ function App() {
 
   return (
     <>
-      <Header />
-      <ProductsListing products={products} categoryName={currentCategory} />
+        <Header />
+        <Routes>
+            <Route path="/" element={<ProductsListingPage products={products} categoryName={currentCategory} />} />
+            <Route path="/product/:id" element={<ProductDetailsPage product={products[0]} />} />
+            <Route path="*" element={<NotFound />} />
+        
+        </Routes>
     </>
   )
 }
 
-export default App
+export default App;

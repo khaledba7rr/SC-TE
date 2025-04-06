@@ -11,11 +11,16 @@
 }
 
 .card {
+  .card-link {
+    text-decoration: none;
+    color: inherit;
+  }
+
   border: none !important;
   outline: none;
   .card-img-top {
-    width: 100%; /* Ensures the image takes up the full width of the card */
-    height: auto; /* Maintains aspect ratio */
+    width: 100%;
+    height: auto;
     object-fit: fill;
     aspect-ratio: 3/2;
   }

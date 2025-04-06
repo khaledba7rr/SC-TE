@@ -1,6 +1,6 @@
 import React from 'react';
-import Product from '../../types/product';
-import './products-listing.scss';
+import Product from '../../types/product.tsx';
+import './products-listing-page.scss';
 import ProductCard from '../../components/product-card/product-card.tsx';
 
 interface ProductsListingProps {
@@ -8,7 +8,7 @@ interface ProductsListingProps {
     categoryName: string;
 }
 
-const ProductsListing: React.FC<ProductsListingProps> = ({ products, categoryName }) => {
+const ProductsListingPage: React.FC<ProductsListingProps> = ({ products, categoryName }) => {
     return (
         <div id='main-container' className="products-listing">
             <h1 className='category-title-plp mb-5'>{categoryName}</h1>
@@ -21,4 +21,4 @@ const ProductsListing: React.FC<ProductsListingProps> = ({ products, categoryNam
     );
 };
 
-export default ProductsListing;
+export default ProductsListingPage;
