@@ -1,6 +1,7 @@
 header {
   .navbar-collapse {
     .nav-item {
+      cursor: pointer;
       .active {
         border-bottom: 2px solid #5ece7b;
       }

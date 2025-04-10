@@ -1,9 +1,17 @@
-import React from 'react'
 
 import logo from '/sw-logo.png'
 import './header.scss'
+import Category from '../../types/category';
+import { Link } from 'react-router-dom';
 
-const Header: React.FC = () => {
+type HeaderProps = {
+  onCategoryChange: (value: string) => void;
+  currentCategory: string;
+  categories: Category[];
+};
+
+const Header: React.FC<HeaderProps> = ({ onCategoryChange , currentCategory, categories}) =>
+{
   return (
     <header className="header">
       <div id="main-container">
@@ -28,29 +36,22 @@ const Header: React.FC = () => {
             >
             {/* CATEGORIES  */}
               <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                <li className="nav-item fs-4">
-                  <a className="nav-link active" aria-current="page" href="#">
-                    Cat1
-                  </a>
-                </li>
 
-                <li className="nav-item fs-4">
-                  <a className="nav-link" aria-current="page" href="#">
-                    Cat2
-                  </a>
-                </li>
-
-                <li className="nav-item fs-4">
-                  <a className="nav-link" aria-current="page" href="#">
-                    Cat3
-                  </a>
-                </li>
+                {categories.map(category => (
+                    <li key={category.id} className="nav-item fs-4">
+                    <Link to="/" className={`nav-link ${category.name === currentCategory && 'active'}`} aria-current="page" onClick={() => onCategoryChange(category.name)} >
+                        {category.name }
+                      </Link>
+                    </li>
+                ))}
               </ul>
             </div>
             
             {/* LOGO */}
             <div className="header__logo d-flex justify-content-center align-items-center d-none d-md-flex">
+              <Link to="/" className="navbar-brand d-flex justify-content-center align-items-center">
                 <img src={logo} className="rounded w-25" alt="..." />
+              </Link>
             </div>
             
             {/* SHOPPING CART */}

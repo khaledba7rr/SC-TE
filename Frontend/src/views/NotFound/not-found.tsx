@@ -14,7 +14,7 @@ const NotFound: React.FC = () => {
                     The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.
                 </p>
                 <button
-                    className="not-found__button mt-2 d-flex justify-content-center align-items-center"
+                    className="not-found__button mt-2 d-flex justify-content-center align-items-center error-button"
                     onClick={() => window.location.href = '/'}
                 >
                     Go to Homepage

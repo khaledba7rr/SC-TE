@@ -75,6 +75,18 @@
 
 .product-detail-image-container {
   .product-images-container {
+    .thumbs-container {
+      .sinlge-thumb-container {
+        cursor: pointer;
+        border: 1px solid #000;
+      }
+      .sinlge-thumb-container.selected {
+        border: #5ece7b 3px solid;
+        border-radius: 5px;
+        padding: 5px;
+      }
+    }
+
     .image {
       margin-top: 10px;
       height: 80px;

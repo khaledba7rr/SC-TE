@@ -9,6 +9,16 @@ use GraphQL\Utils\BuildSchema;
 use Controller\GraphQLController;
 use FastRoute;
 
+header("Access-Control-Allow-Origin: *"); // Allow all domains (for development, change '*' to specific domain for production)
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
+
+// Handle OPTIONS request before anything else
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    header("HTTP/1.1 200 OK");
+    exit();
+}
+
 $productObject = new Product();
 $attributeObject = new Attribute();
 $categoryObject = new Category();

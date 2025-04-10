@@ -8,17 +8,21 @@ class AttributeValue
 {
     public function __construct() {}
 
-    public function getAttributeValuesByAttributeId($id)
+    public function getAttributeValuesByAttributeId(int $attributeId, string $productId)
     {
 
         try {
             $db = new DatabaseConnection();
             $pdo = $db->getConnection();
 
-            $query = "SELECT id, value, display_value as displayValue FROM attribute_values WHERE attribute_id = :id";
+            $query = "SELECT av.id, av.value, av.display_value as displayValue 
+                      FROM attribute_values av
+                      INNER JOIN product_attributes pav ON av.id = pav.attribute_value_id
+                      WHERE av.attribute_id = :id AND pav.product_id = :product_id";
 
             $stmt = $pdo->prepare($query);
-            $stmt->bindParam(':id', $id);
+            $stmt->bindParam(':id', $attributeId);
+            $stmt->bindParam(':product_id', $productId);
             $stmt->execute();
 
             $attributeValues = $stmt->fetchAll(\PDO::FETCH_ASSOC);

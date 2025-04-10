@@ -1,352 +1,132 @@
+import { useState, useEffect } from "react";
 import Header from "./components/header/header.tsx"
 import Product from "./types/product.tsx"
 import NotFound from "./views/NotFound/not-found.tsx";
 import ProductsListingPage from "./views/ProductsListing/products-listing-page.tsx"
 import ProductDetailsPage from "./views/product-details/product-details-page.tsx"
-import {Routes, Route } from 'react-router-dom';
+import { Routes, Route, useParams } from 'react-router-dom';
+import { gql, useQuery } from "@apollo/client";
+import Category from "./types/category.tsx";
+import ErrorComponent from "./components/error/error.tsx";
+import Loading from "./components/loading/loading.tsx";
 
-function App() {
+const dummmyProducts: Product[] = [
+];
 
-  const currentCategory = "Wat"
+const App = () =>{
+  
+  const query = gql`
+    query {
+      categories{
+          id
+          name
+          products {
+              id
+              name
+              description
+              prices {
+                  currency
+                  price
+                  symbol
+                  id
+              }
+              images {
+                id
+                url
+            }
+            attributes {
+                id
+                name
+                type
+                values {
+                    id
+                    displayValue
+                    value
+                }
+            }
+          }
+      }
+  }`;
 
-  const products : Product[] = [
-    {
-      id: "PROD01",
-      brand : "Brand 1",
-      name: "Product 1",
-      in_stock : true,
-      prices: [{
-        id: 1,
-        price: 10.99,
-        currency: "USD",
-        symbol : "$",
-      }],
-      description: "Description for Product 1",
-      images: [
-        {
-          id: 1,
-          imageUrl: "https://picsum.photos/200/300",
-        },
-        {
-          id: 2,
-          imageUrl: "https://picsum.photos/100/200",
-        },
-        {
-          id: 3,
-          imageUrl: "https://picsum.photos/300/400",
-        }
-      ],
-      categoryId: 1,
-      attributes: [
-        {
-          id: 1,
-          name: "Attribute 1",
-          type : "text",
-          values: [
-            {
-              id: 1,
-              value: "Value 1",
-              displayValue : "Display1",
-            },
-            {
-              id: 2,
-              value: "Value 2",
-              displayValue : "Display2",
-            }
-          ],
-        },
-        {
-          id: 2,
-          name: "Color",
-          type : "swatch",
-          values: [
-            {
-              id: 1,
-              value: "#FF0000",
-              displayValue : "Red",
-            },
-            {
-              id: 2,
-              value: "#00FF00",
-              displayValue : "Col",
-            }
-          ],
-        },
-      ],
-      category: {
-        id: 1,
-        name: "Category 1",
+  const [currentCategory, setCutrentCategory] = useState<string>('all');
+  const [products, setProducts] = useState<Product[]>(dummmyProducts);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const HandleSetError = (value: boolean) => {
+    setIsError(value);
+  };
+
+  const HandleSetLoading = (value: boolean) => {
+    setIsLoading(value);
+  };
+
+  const HandleChangeCategory = (selectedCategoryName: string) => {
+    setCutrentCategory(selectedCategoryName);
+  };
+
+  const HandleProductsChange = (products: Product[]) => {
+    setProducts(products);
+  };
+
+  const { data, error, loading } = useQuery(query);
+
+  useEffect(() =>
+  {
+    
+    if (error) {
+      HandleSetError(true);
+      HandleSetLoading(false);
+      return;
+    }
+
+    if (loading) {
+      HandleSetLoading(true);
+      return;
+    }
+
+    if (data) {
+      const selectedCategory = data.categories.find(
+        (category: Category) => category.name === currentCategory
+      );
+
+      if (selectedCategory) {
+        HandleProductsChange(selectedCategory.products);
+      } else {
+        setProducts([]); // fallback if category not found
       }
-    },
-    {
-      id: "PROD02",
-      brand : "Brand 2",
-      name: "Product 2",
-      in_stock : true,
-      prices: [{
-        id: 1,
-        price: 10.99,
-        currency: "USD",
-        symbol : "$",
-      }],
-      description: "Description for Product 1",
-      images: [
-        {
-          id: 1,
-          imageUrl: "https://picsum.photos/200/300",
-        },
-        {
-          id: 2,
-          imageUrl: "https://picsum.photos/200/300",
-        },
-        {
-          id: 3,
-          imageUrl: "https://picsum.photos/200/300",
-        }
-      ],
-      categoryId: 1,
-      attributes: [
-        {
-          id: 1,
-          name: "Attribute 1",
-          type : "text",
-          values: [
-            {
-              id: 1,
-              value: "Value 1",
-              displayValue : "Display Value 1",
-            },
-            {
-              id: 2,
-              value: "Value 2",
-              displayValue : "Display Value 2",
-            }
-          ],
-        },
-      ],
-      category: {
-        id: 1,
-        name: "Category 1",
-      }
-    },
-        {
-      id: "PROD03",
-      brand : "Brand 1",
-      name: "Product 1",
-      in_stock : true,
-      prices: [{
-        id: 1,
-        price: 10.99,
-        currency: "USD",
-        symbol : "$",
-      }],
-      description: "Description for Product 1",
-      images: [
-        {
-          id: 1,
-          imageUrl: "https://picsum.photos/200/300",
-        },
-        {
-          id: 2,
-          imageUrl: "https://picsum.photos/200/300",
-        },
-        {
-          id: 3,
-          imageUrl: "https://picsum.photos/200/300",
-        }
-      ],
-      categoryId: 1,
-      attributes: [
-        {
-          id: 1,
-          name: "Attribute 1",
-          type : "text",
-          values: [
-            {
-              id: 1,
-              value: "Value 1",
-              displayValue : "Display Value 1",
-            },
-            {
-              id: 2,
-              value: "Value 2",
-              displayValue : "Display Value 2",
-            }
-          ],
-        },
-      ],
-      category: {
-        id: 1,
-        name: "Category 1",
-      }
-    },
-    {
-      id: "PROD02",
-      brand : "Brand 6",
-      name: "Product 6",
-      in_stock : true,
-      prices: [{
-        id: 1,
-        price: 10.99,
-        currency: "USD",
-        symbol : "$",
-      }],
-      description: "Description for Product 1",
-      images: [
-        {
-          id: 1,
-          imageUrl: "https://picsum.photos/200/300",
-        },
-        {
-          id: 2,
-          imageUrl: "https://picsum.photos/200/300",
-        },
-        {
-          id: 3,
-          imageUrl: "https://picsum.photos/200/300",
-        }
-      ],
-      categoryId: 1,
-      attributes: [
-        {
-          id: 1,
-          name: "Attribute 1",
-          type : "text",
-          values: [
-            {
-              id: 1,
-              value: "Value 1",
-              displayValue : "Display Value 1",
-            },
-            {
-              id: 2,
-              value: "Value 2",
-              displayValue : "Display Value 2",
-            }
-          ],
-        },
-      ],
-      category: {
-        id: 1,
-        name: "Category 1",
-      }
-    },
-        {
-      id: "PROD04",
-      brand : "Brand 3",
-      name: "Product 3",
-      in_stock : false,
-      prices: [{
-        id: 1,
-        price: 10.99,
-        currency: "USD",
-        symbol : "$",
-      }],
-      description: "Description for Product 1",
-      images: [
-        {
-          id: 1,
-          imageUrl: "https://picsum.photos/200/300",
-        },
-        {
-          id: 2,
-          imageUrl: "https://picsum.photos/200/300",
-        },
-        {
-          id: 3,
-          imageUrl: "https://picsum.photos/200/300",
-        }
-      ],
-      categoryId: 1,
-      attributes: [
-        {
-          id: 1,
-          name: "Attribute 1",
-          type : "text",
-          values: [
-            {
-              id: 1,
-              value: "Value 1",
-              displayValue : "Display Value 1",
-            },
-            {
-              id: 2,
-              value: "Value 2",
-              displayValue : "Display Value 2",
-            }
-          ],
-        },
-      ],
-      category: {
-        id: 1,
-        name: "Category 1",
-      }
-    },
-    {
-      id: "PROD05",
-      brand : "Brand 5",
-      name: "Product 5",
-      in_stock : true,
-      prices: [{
-        id: 1,
-        price: 10.99,
-        currency: "USD",
-        symbol : "$",
-      }],
-      description: "Description for Product 1",
-      images: [
-        {
-          id: 1,
-          imageUrl: "https://picsum.photos/200/300",
-        },
-        {
-          id: 2,
-          imageUrl: "https://picsum.photos/200/300",
-        },
-        {
-          id: 3,
-          imageUrl: "https://picsum.photos/200/300",
-        }
-      ],
-      categoryId: 1,
-      attributes: [
-        {
-          id: 1,
-          name: "Attribute 1",
-          type : "text",
-          values: [
-            {
-              id: 1,
-              value: "Value 1",
-              displayValue : "Display Value 1",
-            },
-            {
-              id: 2,
-              value: "Value 2",
-              displayValue : "Display Value 2",
-            }
-          ],
-        },
-      ],
-      category: {
-        id: 1,
-        name: "Category 1",
-      }
-    },
-    // Add more products as needed
-  ]
+      setIsLoading(false);
+    }
+  }, [data, error, loading, currentCategory]);
 
   return (
     <>
-        <Header />
+      <Header onCategoryChange={HandleChangeCategory} currentCategory={currentCategory} categories={data ? data.categories : []} />
+      {isError && <ErrorComponent />} 
+      {isLoading && <Loading />}
+      <div id="overlayz">
         <Routes>
-            <Route path="/" element={<ProductsListingPage products={products} categoryName={currentCategory} />} />
-            <Route path="/product/:id" element={<ProductDetailsPage product={products[0]} />} />
-            <Route path="*" element={<NotFound />} />
-        
+          <Route path="/" element={<ProductsListingPage products={products} categoryName={currentCategory} error={isError} />} />
+          <Route path="/product/:id" element={<ProductDetailRoute products={products} /> } />
+          <Route path="*" element={<NotFound />} />
         </Routes>
+      </div>
     </>
-  )
-}
+  );
+};
+
+
+const ProductDetailRoute = ({ products }: { products: Product[] }) => {
+    const { id } = useParams();  // Get the id from the URL
+
+    // Find the product matching the id from the URL
+    const product = products.find(product => product.id === id);
+
+    if (!product) {
+        return <div>Product not found!</div>;
+    }
+
+    return <ProductDetailsPage product={product} />;
+};
 
 export default App;

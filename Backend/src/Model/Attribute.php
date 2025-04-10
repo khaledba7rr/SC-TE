@@ -32,7 +32,7 @@ class Attribute
 
             foreach ($attributesData as &$attribute) {
                 // Nested resolution for attribute values
-                $attribute['values'] = $attributeValueObject->getAttributeValuesByAttributeId($attribute['id']);
+                $attribute['values'] = $attributeValueObject->getAttributeValuesByAttributeId($attribute['id'], $id);
             }
 
             return $attributesData;

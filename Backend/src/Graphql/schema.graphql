@@ -8,7 +8,7 @@ type Product {
   id: ID!
   name: String!
   description: String!
-  in_stock : Boolean!
+  in_stock: Boolean!
   category_id: ID!
   brand: String!
   category: Category!
@@ -31,16 +31,16 @@ type Image {
 
 type ProductPrice {
   id: ID!
-  product_id  : String!
+  product_id: String!
   currency: String!
   price: Float!
   symbol: String!
 }
 
-
 type Attribute {
-  name : String!
-  type : String!
+  id: ID!
+  name: String!
+  type: String!
   values: [AttributeValue!]!
 }
 
