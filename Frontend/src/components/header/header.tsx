@@ -3,6 +3,11 @@ import logo from '/sw-logo.png'
 import './header.scss'
 import Category from '../../types/category';
 import { Link } from 'react-router-dom';
+import MiniCart from '../mini-cart/mini-cart';
+
+import { closeCart } from '../../store/cart-slice';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../store/index';
 
 type HeaderProps = {
   onCategoryChange: (value: string) => void;
@@ -12,10 +17,14 @@ type HeaderProps = {
 
 const Header: React.FC<HeaderProps> = ({ onCategoryChange , currentCategory, categories}) =>
 {
+  const isCartOpen = useSelector((state: RootState) => state.cart.isCartOpen);
+  const dispatch = useDispatch();
+
   return (
     <header className="header">
       <div id="main-container">
         <nav className="navbar navbar-expand-lg">
+          
           <div className="container-fluid d-flex justify-content-between align-items-center">
             
             <button
@@ -39,7 +48,7 @@ const Header: React.FC<HeaderProps> = ({ onCategoryChange , currentCategory, cat
 
                 {categories.map(category => (
                     <li key={category.id} className="nav-item fs-4">
-                    <Link to="/" className={`nav-link ${category.name === currentCategory && 'active'}`} aria-current="page" onClick={() => onCategoryChange(category.name)} >
+                    <Link data-testid={category.name === currentCategory ? 'active-category-link' : 'category-link'} to="/" className={`nav-link ${category.name === currentCategory && 'active'}`} aria-current="page" onClick={() => onCategoryChange(category.name)} >
                         {category.name }
                       </Link>
                     </li>
@@ -54,25 +63,17 @@ const Header: React.FC<HeaderProps> = ({ onCategoryChange , currentCategory, cat
               </Link>
             </div>
             
-            {/* SHOPPING CART */}
-            <div className="header__logo px-5">          
-                <div className="dropdown px-3">
-                    <a className="btn dropdown-toggle"  data-bs-toggle="dropdown" aria-expanded="false">
-                        <i className="bi bi-cart3 fs-2"></i>
-                    </a>
-
-                    <div className="dropdown-menu px-2">
-                        <p><a className="dropdown-item" href="#">Action</a></p>
-                        <p><a className="dropdown-item" href="#">Another action</a></p>
-                        <p><a className="dropdown-item" href="#">Something else here</a></p>
-                    </div>
-                    
-                </div>
-            </div>
+            <MiniCart />
                       
           </div>
         </nav>
       </div>
+
+
+      <div id='overlay' onClick={() => dispatch(closeCart())} className={`overlay ${isCartOpen ? 'd-block' : 'd-none'}`} >
+
+      </div>
+
     </header>
   )
 }

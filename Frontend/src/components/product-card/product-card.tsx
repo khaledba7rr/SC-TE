@@ -13,13 +13,28 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) =>
 
     return (
         <div>
-            <div className="card col p-3" >
+            <div className={`card col p-3 ${!product.in_stock && 'out-of-stock' }`} data-testid={`product-${product.name.toLowerCase().replace(' ' , '-')}`} >
                 <Link to={`/product/${product.id}`} className="card-link">
-                    <img src={ product.images[0].url} className="card-img-top" alt={product.name} />
-                    <div className="card-body">
-                        <h5 className="card-product-name">{ product.name}</h5>
-                        <p className="card-product-price"> <span> {symbol} </span> { price }</p>
+                    
+                    <div className='prod-img-container position-relative'>
+                        <img src={product.images[0].url} className="card-img-top" alt={product.name} />
+                        <div className={`out-of-stock-label-conatainer position-absolute ${product.in_stock ? 'd-none' : 'd-block'}`}>
+                            <p> out of stock  </p>
+                        </div>
                     </div>
+
+                    <div className="card-body position-relative">
+                        <h5 className="card-product-name">{ product.name}</h5>
+                        <p className="card-product-price"> <span> {symbol} </span> {price}</p>
+                        {product.in_stock && 
+                        <div className='add-to-cart-container position-absolute'>
+                            <button className='add-to-cart-btn'>
+                                <i className="bi bi-cart3 fs-3"> </i>
+                            </button>
+                        </div>
+                        }
+                    </div>
+
                 </Link>
             </div>
         </div>

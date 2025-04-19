@@ -9,12 +9,16 @@ import 'bootstrap';
 //icons
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import client from './data/apollo-client.ts';
+import { Provider } from 'react-redux';
+import store from './store/index.ts';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ApolloProvider client={client}>
       <BrowserRouter>
-        <App />
+        <Provider store={store}>
+          <App />
+        </Provider>
       </BrowserRouter>
   </ApolloProvider>
   </StrictMode>,

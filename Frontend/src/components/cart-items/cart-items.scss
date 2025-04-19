@@ -1,0 +1,146 @@
+.cart-container {
+  position: relative;
+  .cart-items {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    background-color: white;
+    position: absolute;
+    min-width: 500px;
+    right: 15.5%;
+    top: 172%;
+    z-index: 501;
+
+    .bag-title {
+      span {
+        font-size: 16px;
+        font-family: 'raleway', sans-serif;
+      }
+      .my-bag {
+        font-weight: 700;
+      }
+      .items-count {
+        font-weight: 500;
+      }
+    }
+
+    .cart-items-list {
+      max-height: 65vh;
+      overflow-y: auto;
+      overflow-x: hidden;
+      .cart-item {
+        font-family: 'raleway', sans-serif;
+        .quantity-button {
+          background-color: #ffffff;
+          border: 1px solid #1d1f22;
+          color: #000;
+          font-size: 14px;
+          padding: 5px 10px;
+          text-align: center;
+          cursor: pointer;
+        }
+
+        .product-name {
+          font-size: 18px;
+          font-weight: 300;
+        }
+        .product-price {
+          font-size: 16px;
+          font-weight: 600;
+        }
+
+        .product-attributes {
+          .attribute-name {
+            font-family: 'Raleway', sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            text-transform: uppercase;
+          }
+          .attribute-values {
+            .attribute-values-text {
+              .attribute-text {
+                border: 1px solid #000;
+                font-family: 'Source Sans Pro', sans-serif;
+                font-size: 10px;
+                font-weight: 400;
+              }
+              .attribute-text.selected {
+                background-color: #1d1f22;
+                color: white;
+              }
+            }
+
+            .attribute-values-swatch {
+              .attribute-swatch {
+                height: 16px;
+                width: 16px;
+                padding: 0;
+              }
+
+              .swatch-container:has(.attribute-swatch.selected) {
+                border: 1px solid green;
+              }
+            }
+          }
+        }
+
+        .product-main-image {
+          display: flex;
+          aspect-ratio: 4 / 3;
+          overflow: hidden;
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+          }
+        }
+      }
+    }
+
+    .total-section {
+      .total {
+        font-family: 'roboto', sans-serif;
+        font-size: 16px;
+        font-weight: 500;
+      }
+      .total-price {
+        font-weight: 700;
+        font-family: 'Raleway', 'sans-serif';
+      }
+    }
+
+    .checkout-section {
+      .checkout-btn {
+        background-color: #5ece7b;
+        color: white;
+        font-size: 14px;
+        font-family: 'raleway', sans-serif;
+        font-weight: 600;
+        padding: 16px 32px;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        text-transform: uppercase;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .cart-container {
+    .cart-items {
+      right: 150.5%;
+      top: 111%;
+    }
+  }
+}
+
+@media screen and (max-width: 668px) {
+  .cart-container {
+    .cart-items {
+      right: 0%;
+    }
+  }
+}

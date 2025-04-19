@@ -1,57 +1,30 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Header from "./components/header/header.tsx"
 import Product from "./types/product.tsx"
 import NotFound from "./views/NotFound/not-found.tsx";
 import ProductsListingPage from "./views/ProductsListing/products-listing-page.tsx"
 import ProductDetailsPage from "./views/product-details/product-details-page.tsx"
 import { Routes, Route, useParams } from 'react-router-dom';
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import Category from "./types/category.tsx";
 import ErrorComponent from "./components/error/error.tsx";
 import Loading from "./components/loading/loading.tsx";
+import { categoriesQuery } from "./constants/graphql-queries.ts";
+
+import { useDispatch } from 'react-redux';
+import { setAllProducts } from "./store/cart-slice.ts";
 
 const dummmyProducts: Product[] = [
 ];
 
 const App = () =>{
   
-  const query = gql`
-    query {
-      categories{
-          id
-          name
-          products {
-              id
-              name
-              description
-              prices {
-                  currency
-                  price
-                  symbol
-                  id
-              }
-              images {
-                id
-                url
-            }
-            attributes {
-                id
-                name
-                type
-                values {
-                    id
-                    displayValue
-                    value
-                }
-            }
-          }
-      }
-  }`;
-
   const [currentCategory, setCutrentCategory] = useState<string>('all');
   const [products, setProducts] = useState<Product[]>(dummmyProducts);
   const [isError, setIsError] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const dispatch = useDispatch();
 
   const HandleSetError = (value: boolean) => {
     setIsError(value);
@@ -69,7 +42,11 @@ const App = () =>{
     setProducts(products);
   };
 
-  const { data, error, loading } = useQuery(query);
+  const HandleSaveAllProductsInState = useCallback((products: Product[]) => {
+    dispatch(setAllProducts(products));
+  }, [dispatch]);
+
+  const { data, error, loading } = useQuery(categoriesQuery);
 
   useEffect(() =>
   {
@@ -90,6 +67,15 @@ const App = () =>{
         (category: Category) => category.name === currentCategory
       );
 
+      const allCategory = data.categories.find(
+        (category: Category) => category.name === 'all'
+      );
+
+      if (allCategory)
+      {
+        HandleSaveAllProductsInState(allCategory.products);
+      }
+
       if (selectedCategory) {
         HandleProductsChange(selectedCategory.products);
       } else {
@@ -97,20 +83,19 @@ const App = () =>{
       }
       setIsLoading(false);
     }
-  }, [data, error, loading, currentCategory]);
+
+  }, [data, error, loading, currentCategory, HandleSaveAllProductsInState]);
 
   return (
     <>
       <Header onCategoryChange={HandleChangeCategory} currentCategory={currentCategory} categories={data ? data.categories : []} />
       {isError && <ErrorComponent />} 
       {isLoading && <Loading />}
-      <div id="overlayz">
         <Routes>
           <Route path="/" element={<ProductsListingPage products={products} categoryName={currentCategory} error={isError} />} />
           <Route path="/product/:id" element={<ProductDetailRoute products={products} /> } />
           <Route path="*" element={<NotFound />} />
         </Routes>
-      </div>
     </>
   );
 };
