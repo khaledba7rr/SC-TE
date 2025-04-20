@@ -30,6 +30,7 @@ const CartItems: React.FC = () =>
                     const product = allProducts.find((product) => product.id === item.productId);
 
                     return (
+                        <>
                         <div key={`${item.productId} ${index}`} className='d-flex mb-2 mt-2 row align-items-stretch'>
 
                             <div className='col-5'>
@@ -56,6 +57,9 @@ const CartItems: React.FC = () =>
                                 <img className='' alt='product' src={product?.images[0].url} />
                             </div>
                         </div>
+
+                        <hr></hr>
+                        </>
                     );
                 })}
                 

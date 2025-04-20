@@ -70,6 +70,10 @@
       outline: none;
       border: none;
     }
+    button:disabled {
+      background-color: grey;
+      cursor: not-allowed;
+    }
   }
 }
 
@@ -101,6 +105,18 @@
         width: 100%;
         aspect-ratio: 3/2;
         object-fit: fill;
+      }
+    }
+
+    .carousel-container {
+      width: 1500px;
+      position: absolute;
+      top: 50%;
+      left: 0%;
+      .carousel-buttons-container {
+        button {
+          background-color: rgba(0, 0, 0, 0.8);
+        }
       }
     }
   }

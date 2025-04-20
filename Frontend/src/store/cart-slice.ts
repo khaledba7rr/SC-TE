@@ -129,6 +129,11 @@ const cartSlice = createSlice({
       state.isCartOpen = !state.isCartOpen;
     },
 
+    openCart(state)
+    {
+      state.isCartOpen = true;
+    },
+
     setAllProducts(state, action: PayloadAction<Product[]>)
     {
       state.allProducts = action.payload;
@@ -138,6 +143,6 @@ const cartSlice = createSlice({
 
 });
 
-export const { addItem, increaseQuantity, decreaseQuantity, clearCart, closeCart, toggleCart, setAllProducts } = cartSlice.actions;
+export const { addItem, increaseQuantity, decreaseQuantity, clearCart, closeCart, toggleCart, setAllProducts, openCart } = cartSlice.actions;
 
 export default cartSlice.reducer;

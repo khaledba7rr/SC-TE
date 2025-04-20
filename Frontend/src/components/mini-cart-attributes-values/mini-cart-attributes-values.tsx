@@ -15,7 +15,7 @@ const MiniCartAttributesValues: React.FC<MiniCartAttributesValuesProps> = ({
 
     const GetKebakAttributeName = () : string =>
     {
-        return attribute.name.toLowerCase().replace(' ', '-');
+        return attribute.name.toLowerCase().replace(/\s+/g, "-");
     }
     
     const GetAttributeValues = (attributeType: string) =>
@@ -27,7 +27,7 @@ const MiniCartAttributesValues: React.FC<MiniCartAttributesValuesProps> = ({
                     <div className="attribute-values-text d-flex">
                         {attribute.values.map((value: AttributeValue, index) => (
                             <div key={value.id ? value.id : `${value.displayValue}-${index}`} className={`attribute-text m-1 p-2 d-flex justify-content-center align-items-center  ${selectedAttributeValueId === value.id && 'selected'}`} >
-                                <div data-testid={`cart-item-attribute-${GetKebakAttributeName()}-${GetKebakAttributeName() + (selectedAttributeValueId === value.id ? '-selected' : '') }`} >{value.displayValue}</div>
+                                <div data-testid={`cart-item-attribute-${GetKebakAttributeName()}-${GetKebakAttributeName() + (selectedAttributeValueId === value.id ? '-selected' : '') }`} >{value.value}</div>
                             </div>
                             ))}
                     </div>
@@ -53,7 +53,7 @@ const MiniCartAttributesValues: React.FC<MiniCartAttributesValuesProps> = ({
     return (<>
         
         <div className="product-attributes">
-            <div className='attribute-name' data-testid={`cart-item-attribute-${GetKebakAttributeName}`}> { attribute.name } : </div>
+            <div className='attribute-name' data-testid={`cart-item-attribute-${GetKebakAttributeName()}`}> { attribute.name } : </div>
             <div className='attribute-values'>
                 { GetAttributeValues(attribute.type) }
             </div>

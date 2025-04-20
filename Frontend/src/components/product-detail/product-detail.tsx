@@ -6,7 +6,7 @@ import parse from 'html-react-parser';
 import AttributeValues from '../attribute-values/attribute-values';
 
 import { useDispatch } from 'react-redux';
-import { addItem } from '../../store/cart-slice.ts';
+import { addItem, openCart } from '../../store/cart-slice.ts';
 import ProductDataSelection from '../../types/product-selection.tsx';
 
 interface ProductDetailProps {
@@ -68,6 +68,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) =>
         }
 
         dispatch(addItem(productToAddToCart));
+        dispatch(openCart());
     }
 
     const HandleProductSelection = (attributeId: number, valueId: number) =>
@@ -121,11 +122,40 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) =>
         console.log(productSelection);
     };
 
+    const HandleCarouselClick = (direction: 'next' | 'previous') =>
+    {
+        const currentImageIndex = product.images.findIndex(img => img.url === currentImageUrl);
+
+        if (direction === 'next')
+        {
+            
+            if (currentImageIndex === (product.images.length - 1))
+            {
+                HandleImageChange(product.images[0].url);
+                return;
+            }
+
+            HandleImageChange(product.images[currentImageIndex + 1].url);
+        }
+
+        if (direction === 'previous')
+        {
+            if (currentImageIndex === 0 )
+            {
+                HandleImageChange(product.images[product.images.length - 1].url);
+                return;
+            }
+
+            HandleImageChange(product.images[currentImageIndex - 1].url);
+        }
+
+    }
+
     return (
         <>
             <div id="main-container" className="d-flex flex-column flex-md-row justify-between-md-around my-5">
                 <div className="product-detail-image-container d-flex flex-column flex-md-row align-items-center align-items-md-start justify-content-center col-12 col-md-8">
-                    <div className="product-images-container p-3">
+                    <div className="product-images-container p-3" data-testid='product-gallery'>
                         <div className="thumbs-container d-flex flex-wrap flex-md-column justify-content-end align-items-center">
                             {product.images.map((image) => (
                                 <div key={image.url} className={`sinlge-thumb-container ${image.url === currentImageUrl && 'selected'} thumb-image m-1`} onClick={() => HandleImageChange(image.url)}>
@@ -136,10 +166,22 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) =>
                         </div>
                     </div>
 
-                    <div className="main-image p-3 w-75">
+                    <div className="main-image p-3 w-75 position-relative">
+                        
                         <div className="main-image-container d-flex justify-content-center align-items-center">
                             <img src={currentImageUrl} alt={product.name} className="main-image" />
                         </div>
+
+                        <div className={`carousel-container ${product.images.length > 1 ? 'd-block' : 'd-none' } position-absolute w-100`}>
+                            <div className='carousel-buttons-container d-flex justify-content-between px-5'>
+
+                                <button onClick={ () => HandleCarouselClick('previous') } className='p-3 border border-0' > <i className="bi bi-chevron-compact-left fs-3"></i> </button>
+
+                                <button onClick={ () => HandleCarouselClick('next') } className='p-3 border border-0' > <i className="bi bi-chevron-compact-right fs-3"></i> </button>
+                                
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
@@ -150,7 +192,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) =>
 
                     <div className="product-attributes w-100 d-flex flex-column justify-content-md-between align-items-start align-items-md-start">
                         {product.attributes.map((attribute) => (
-                            <div key={attribute.id} className="my-3">
+                            <div key={attribute.id} className="my-3" data-testid={`product-attribute-${attribute.name.toLowerCase().replace(/\s+/g, "-")}`} >
                                 <div className="attribute-name">{attribute.name}:</div>
 
                                 <div className="attribute-values d-flex flex-wrap">
@@ -168,10 +210,10 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) =>
                     </div>
 
                     <div className="product-add-to-cart-btn w-100">
-                        <button onClick={() => HandleAddToCart(productSelection) } className="w-100 my-5">Add to cart</button>
+                        <button data-testid='add-to-cart' disabled={!product.in_stock} onClick={() => HandleAddToCart(productSelection)} className="w-100 my-5">{ product.in_stock ? 'Add to cart' : 'Out of stock' }</button>
                     </div>
 
-                    <div className="product-description w-100">{ parse(description) }</div>
+                    <div className="product-description w-100" data-testid='product-description'>{ parse(description) }</div>
                 </div>
             </div>
 
