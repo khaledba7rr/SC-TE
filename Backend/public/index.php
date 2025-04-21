@@ -5,9 +5,9 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use Model\Product;
 use Model\Attribute;
 use Model\Category;
+use Model\Order;
 use GraphQL\Utils\BuildSchema;
 use Controller\GraphQLController;
-use FastRoute;
 
 header("Access-Control-Allow-Origin: *"); // Allow all domains (for development, change '*' to specific domain for production)
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
@@ -22,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 $productObject = new Product();
 $attributeObject = new Attribute();
 $categoryObject = new Category();
+$orderObject = new Order();
 
 $schema = BuildSchema::build(file_get_contents(__DIR__ . '/../src/Graphql/schema.graphql'));
 
@@ -30,6 +31,7 @@ $rootValue = [
     'product' => fn($root, $args) => $productObject->getProductById($args['id']),
     'attributes' => fn($root, $args) => $attributeObject->getAttributesByProductId($args['product_id']),
     'categories' => fn() => $categoryObject->getAllCategories(),
+    'CreateOrder' => fn($root, $args) => $orderObject->createOrder($args['input']),
 ];
 
 // Set up FastRoute

@@ -4,6 +4,10 @@ type Query {
   product(id: String!): Product
 }
 
+type Mutation {
+  CreateOrder(input: OrderInput!): Order!
+}
+
 type Product {
   id: ID!
   name: String!
@@ -48,4 +52,48 @@ type AttributeValue {
   id: ID!
   value: String!
   displayValue: String!
+}
+
+type Order {
+  orderId: ID!
+  customerName: String!
+  totalPrice: Float!
+  status: String!
+  created_at: String!
+  items: [OrderItem!]!
+}
+
+type OrderItem {
+  orderItemId: ID!
+  orderId: ID!
+  productId: String!
+  quantity: Int!
+  unitPrice: Float!
+  currency: String!
+  attributes: [OrderItemAttribute!]!
+}
+
+type OrderItemAttribute {
+  attributeId: ID!
+  valueId: ID!
+}
+
+input OrderInput {
+  customerName: String!
+  currency: String!
+  totalPrice: Float!
+  items: [OrderItemInput!]!
+}
+
+input OrderItemInput {
+  productId: String!
+  quantity: Int!
+  unitPrice: Float!
+  currency: String!
+  attributes: [OrderItemAttributeInput!]!
+}
+
+input OrderItemAttributeInput {
+  attributeId: Int!
+  valueId: Int!
 }
