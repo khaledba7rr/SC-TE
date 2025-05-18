@@ -32,6 +32,7 @@ $rootValue = [
     'attributes' => fn($root, $args) => $attributeObject->getAttributesByProductId($args['product_id']),
     'categories' => fn() => $categoryObject->getAllCategories(),
     'CreateOrder' => fn($root, $args) => $orderObject->createOrder($args['input']),
+    'orders' => fn($root, $args) => $orderObject->getAllOrders(),
 ];
 
 // Set up FastRoute

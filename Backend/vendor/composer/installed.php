@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'a4a8c4e8a09383122769dbdb60104322054fecd5',
+        'reference' => 'c3ce4681afe41b65a50fd1d5583264eab8e4c445',
         'name' => 'bahr/backend',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'a4a8c4e8a09383122769dbdb60104322054fecd5',
+            'reference' => 'c3ce4681afe41b65a50fd1d5583264eab8e4c445',
             'dev_requirement' => false,
         ),
         'graham-campbell/result-type' => array(

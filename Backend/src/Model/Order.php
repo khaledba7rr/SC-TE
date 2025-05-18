@@ -72,4 +72,58 @@ class Order
             throw $e;
         }
     }
+
+    public function getAllOrders(): array
+    {
+        $db = new DatabaseConnection();
+        $pdo = $db->getConnection();
+
+        try {
+            $orders = [];
+            $stmt = $pdo->query("SELECT * FROM orders ORDER BY created_at DESC");
+            $orderResults = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+            foreach ($orderResults as $order) {
+                $itemStmt = $pdo->prepare("SELECT * FROM order_items WHERE order_id = ?");
+                $itemStmt->execute([$order['id']]);
+                $items = [];
+
+                while ($item = $itemStmt->fetch(\PDO::FETCH_ASSOC)) {
+                    $attrStmt = $pdo->prepare("SELECT * FROM order_item_attributes WHERE order_item_id = ?");
+                    $attrStmt->execute([$item['id']]);
+                    $attributes = [];
+
+                    while ($attr = $attrStmt->fetch(\PDO::FETCH_ASSOC)) {
+                        $attributes[] = [
+                            'attributeId' => $attr['attribute_id'],
+                            'valueId' => $attr['value_id']
+                        ];
+                    }
+
+                    $items[] = [
+                        'orderItemId' => $item['id'],
+                        'orderId' => $item['order_id'],
+                        'productId' => $item['product_id'],
+                        'quantity' => $item['quantity'],
+                        'unitPrice' => $item['unit_price'],
+                        'currency' => 'USD',
+                        'attributes' => $attributes
+                    ];
+                }
+
+                $orders[] = [
+                    'orderId' => $order['id'],
+                    'totalPrice' => $order['total_price'],
+                    'customerName' => $order['customer_name'],
+                    'status' => $order['status'] ?? 'pending',
+                    'created_at' => (new DateTime($order['created_at']))->format('d/m/Y - H:i'),
+                    'items' => $items
+                ];
+            }
+
+            return $orders;
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
 }
