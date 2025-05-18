@@ -11,10 +11,9 @@ import ErrorComponent from "./components/error/error.tsx";
 import Loading from "./components/loading/loading.tsx";
 import { categoriesQuery } from "./constants/graphql-queries.ts";
 
-import { useDispatch } from 'react-redux';
 import { setAllProducts, setOrderProccessFailed, setOrderProccessSuccess } from "./store/cart-slice.ts";
 
-import { useSelector } from "react-redux";
+import { useDispatch , useSelector } from 'react-redux';
 import { RootState } from "./store/index.ts";
 import Orders from "./views/Orders/Orders.tsx";
 
