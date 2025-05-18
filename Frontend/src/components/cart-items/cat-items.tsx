@@ -3,8 +3,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/index';
 import { increaseQuantity, decreaseQuantity } from '../../store/cart-slice';
 import MiniCartAttributesValues from '../mini-cart-attributes-values/mini-cart-attributes-values';
+import { useMutation } from '@apollo/client';
 
 import './cart-items.scss';
+import CartItem from '../../types/cart-items';
+import { orderQuery } from '../../constants/graphql-queries';
+import Loading from '../loading/loading';
+
+import { setOrderProccessFailed, setOrderProccessSuccess , clearCart } from '../../store/cart-slice';
+
 const CartItems: React.FC = () =>
 {
 
@@ -12,11 +19,54 @@ const CartItems: React.FC = () =>
     
     const cartItems = useSelector((state: RootState) => state.cart.items);
     const allProducts = useSelector((state: RootState) => state.cart.allProducts);
-
     const itemsCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
-    const itemsTotal = cartItems.reduce((acc, item) => acc + (item.quantity * (allProducts.find(product => product.id === item.productId)?.prices[0].price ?? 0)) , 0);
+    const itemsTotal = cartItems.reduce((acc, item) => acc + (item.quantity * (allProducts.find(product => product.id === item.productId)?.prices[0].price ?? 0)), 0);
+
+    const [createOrder, {loading }] = useMutation(orderQuery);
+
+    const HandleCreateOrder = (cartItems : CartItem[]) =>
+    {
+        const orderItems = cartItems.map(item => ({
+            productId: item.productId,
+            quantity: item.quantity,
+            unitPrice: allProducts.find(product => product.id === item.productId)?.prices[0].price,
+            currency: allProducts.find(product => product.id === item.productId)?.prices[0].currency,
+            attributes: item.attributes.map(attr => ({
+                attributeId: Number(attr.attribute_id),
+                valueId: Number(attr.value_id)
+            }))
+        }));
+
+        createOrder({
+            variables: {
+                input: {
+                    customerName: 'Khaled Bahr',
+                    currency: 'USD',
+                    totalPrice: itemsTotal,
+                    items: orderItems
+                },
+            },
+        })
+        .then(response => {
+            if (response.data.CreateOrder)
+            {
+                dispatch(setOrderProccessSuccess(true));
+                dispatch(clearCart());
+            }
+            else
+            {
+                dispatch(setOrderProccessFailed(true));
+            }
+        }
+        )
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        .catch(_ => dispatch(setOrderProccessFailed(true)) );
+        
+    }
 
     return <>
+        
+        {loading && <Loading />}
         <div className='d-flex bag-title'>
             <p> <span className='my-bag'> My Bag, </span> <span className='items-count'> { itemsCount } {itemsCount === 1 ? ' Item' : ' Items' }  </span> </p>
         </div>
@@ -63,8 +113,6 @@ const CartItems: React.FC = () =>
                     );
                 })}
                 
-
-                
             </div>
 
         </div>
@@ -75,8 +123,9 @@ const CartItems: React.FC = () =>
         </div>
 
         <div className='checkout-section d-flex'>
-            <button className='checkout-btn w-100'> place order </button>
-        </div>    
+            <button className='checkout-btn w-100' onClick={() => HandleCreateOrder(cartItems)}> place order </button>
+        </div>
+
     </>;
 };
 

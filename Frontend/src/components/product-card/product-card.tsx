@@ -3,10 +3,12 @@ import './product-card.scss';
 import Product from '../../types/product';
 import { Link } from 'react-router-dom';
 
-
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addItem } from '../../store/cart-slice.ts';
 import ProductDataSelection from '../../types/product-selection';
+
+import Loading from '../loading/loading.tsx';
 
 interface ProductCardProps {
     product: Product;
@@ -14,9 +16,9 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) =>
 {
-    const price = product.prices[0].price;
-    const symbol = product.prices[0].symbol;
+    const { price, symbol } = product.prices[0];
 
+    const [isImageLoaded, setIsImageLoaded] = useState<boolean>(false);
 
     const dispatch = useDispatch();
 
@@ -27,8 +29,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) =>
         attribute_id: number;
         value_id: number;
         }[] = product.attributes.map((attr) => ({ attribute_id: attr.id, value_id: attr.values[0].id }))
-
-        console.log(attributesWithFirstAttributeValue);
 
         let productToAddToCart: ProductDataSelection = {
             productId: product.id,
@@ -56,7 +56,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) =>
                 <Link to={`/product/${product.id}`} className="card-link">
                     
                     <div className='prod-img-container position-relative'>
-                        <img src={product.images[0].url} className="card-img-top" alt={product.name} />
+                        {!isImageLoaded && <div className='card-img-top product-card-image-loader'> <Loading /> </div>}
+                        <img onLoad={() => setIsImageLoaded(true)} src={product.images[0].url} className="card-img-top" alt={product.name} />
                         <div className={`out-of-stock-label-conatainer position-absolute ${product.in_stock ? 'd-none' : 'd-block'}`}>
                             <p> out of stock  </p>
                         </div>

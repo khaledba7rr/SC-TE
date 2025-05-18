@@ -1,6 +1,5 @@
 import { gql } from "@apollo/client";
 
-
   export const categoriesQuery = gql`
     query {
       categories{
@@ -34,3 +33,50 @@ import { gql } from "@apollo/client";
           }
       }
   }`;
+
+
+    export const ordersQuery = gql`
+    query Orders {
+    orders {
+        orderId
+        customerName
+        totalPrice
+        status
+        created_at
+        items {
+            orderItemId
+            orderId
+            productId
+            quantity
+            unitPrice
+            currency
+            attributes {
+                attributeId
+                valueId
+            }
+        }
+    }
+}`;
+
+export const orderQuery = gql`
+mutation CreateOrder ($input: OrderInput!) {
+    CreateOrder(input: $input ) 
+    {
+        orderId
+        totalPrice
+        status
+        created_at
+        items {
+            orderItemId
+            orderId
+            productId
+            quantity
+            unitPrice
+            currency
+            attributes {
+                attributeId
+                valueId
+            }
+        }
+    }
+}`;

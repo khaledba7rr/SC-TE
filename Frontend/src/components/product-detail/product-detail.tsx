@@ -3,8 +3,8 @@ import './product-detail.scss';
 import Product from '../../types/product';
 import Loading from '../loading/loading';
 import parse from 'html-react-parser';
-import AttributeValues from '../attribute-values/attribute-values';
 
+import AttributeValues from '../attribute-values/attribute-values';
 import { useDispatch } from 'react-redux';
 import { addItem, openCart } from '../../store/cart-slice.ts';
 import ProductDataSelection from '../../types/product-selection.tsx';
@@ -73,8 +73,6 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) =>
 
     const HandleProductSelection = (attributeId: number, valueId: number) =>
     {
-        console.log("attrID", attributeId);
-        console.log("valueID", valueId);
 
         if (!productSelection)
         {
@@ -90,8 +88,6 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) =>
         }
 
         const existingProductSelection = productSelection?.attributes.find((attribute) => attribute.attribute_id === attributeId);
-
-        console.log(price);
 
         if (existingProductSelection)
         {
@@ -117,9 +113,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) =>
             };
 
             setProductSelection(updatedProductSelection);
-            console.log(updatedProductSelection);
         }
-        console.log(productSelection);
     };
 
     const HandleCarouselClick = (direction: 'next' | 'previous') =>

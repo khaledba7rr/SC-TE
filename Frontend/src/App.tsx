@@ -12,7 +12,11 @@ import Loading from "./components/loading/loading.tsx";
 import { categoriesQuery } from "./constants/graphql-queries.ts";
 
 import { useDispatch } from 'react-redux';
-import { setAllProducts } from "./store/cart-slice.ts";
+import { setAllProducts, setOrderProccessFailed, setOrderProccessSuccess } from "./store/cart-slice.ts";
+
+import { useSelector } from "react-redux";
+import { RootState } from "./store/index.ts";
+import Orders from "./views/Orders/Orders.tsx";
 
 const dummmyProducts: Product[] = [
 ];
@@ -23,6 +27,12 @@ const App = () =>{
   const [products, setProducts] = useState<Product[]>(dummmyProducts);
   const [isError, setIsError] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const [showErrorNotifierMessage, setShowErrorNotifierMessage] = useState<boolean>(false);
+  const [showSuccessNotifierMessage, setShowSuccessNotifierMessage] = useState<boolean>(false);
+
+  const orderProcessFailed = useSelector((state: RootState) => state.cart.orderProcessFailed);
+  const orderProcessSuccess = useSelector((state: RootState) => state.cart.orderProcessSuccess);
 
   const dispatch = useDispatch();
 
@@ -48,8 +58,47 @@ const App = () =>{
 
   const { data, error, loading } = useQuery(categoriesQuery);
 
+    type ToasterNotifierArguments = {
+        title: string,
+        messageDetails: string,
+        isSuccess: boolean
+    };
+  
+  const ToasterNotifier: React.FC<ToasterNotifierArguments> = ({ title, messageDetails, isSuccess }) =>
+  {
+       setTimeout(() => {
+            HandleRemoveNotifiers();
+        }
+        , 5000);
+        return (
+            <div className="error-popup-container d-block">
+                <div className="toast-container d-block position-fixed bottom-0 end-0 p-4">
+                    <div id="liveToast" className="toast d-block">
+                        <div className={`toast-header ${!isSuccess ? 'bg-danger' : 'bg-success'}`}>
+                            <i className="bi bi-exclamation-octagon-fill px-2"></i>
+                            <strong className="me-auto">{title}</strong>
+                            <small>{!isSuccess ? 'Error' : 'Success'}</small>
+                            <button type="button" className="btn-close" onClick={HandleRemoveNotifiers}></button>
+                        </div>
+                        <div className="toast-body">
+                            {messageDetails}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    };
+        
+    const HandleRemoveNotifiers = () =>
+    {
+      dispatch(setOrderProccessFailed(false));
+      dispatch(setOrderProccessSuccess(false));
+    }
+
   useEffect(() =>
   {
+    setShowErrorNotifierMessage(orderProcessFailed);
+    setShowSuccessNotifierMessage(orderProcessSuccess);
     
     if (error) {
       HandleSetError(true);
@@ -84,7 +133,7 @@ const App = () =>{
       setIsLoading(false);
     }
 
-  }, [data, error, loading, currentCategory, HandleSaveAllProductsInState]);
+  }, [data, error, loading, currentCategory, HandleSaveAllProductsInState, orderProcessFailed, orderProcessSuccess]);
 
   return (
     <>
@@ -94,8 +143,14 @@ const App = () =>{
         <Routes>
           <Route path="/" element={<ProductsListingPage products={products} categoryName={currentCategory} error={isError} />} />
           <Route path="/product/:id" element={<ProductDetailRoute products={products} /> } />
+          <Route path="/orders" element={<Orders /> } />
+          
           <Route path="*" element={<NotFound />} />
-        </Routes>
+      </Routes>
+        <div>
+          {showErrorNotifierMessage && <ToasterNotifier title="Couldn't create the order !" messageDetails="An error occurred while creating the order." isSuccess={false} />}
+          {showSuccessNotifierMessage && <ToasterNotifier title="Order created successfully !" messageDetails="Your order has been created successfully." isSuccess={true} />}
+      </div>
     </>
   );
 };

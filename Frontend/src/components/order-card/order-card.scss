@@ -1,0 +1,55 @@
+.accordion {
+  .accordion-item {
+    background-color: #f1f1f1;
+    .accordion-header {
+      .accordion-button {
+        background-color: rgb(94, 206, 123, 0.5);
+      }
+      .order-date {
+        font-size: 18px;
+      }
+    }
+  }
+}
+
+.attr-parent {
+  background-color: #f1f1f1;
+}
+
+.table {
+  .product-attributes {
+    background-color: #f1f1f1 !important;
+    .attribute-name {
+      font-family: 'Raleway', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      text-transform: uppercase;
+    }
+    .attribute-values {
+      .attribute-values-text {
+        .attribute-text {
+          border: 1px solid #000;
+          font-family: 'Source Sans Pro', sans-serif;
+          font-size: 10px;
+          font-weight: 400;
+        }
+        .attribute-text.selected {
+          background-color: #1d1f22;
+          color: white;
+        }
+      }
+
+      .attribute-values-swatch {
+        .attribute-swatch {
+          height: 16px;
+          width: 16px;
+          padding: 0;
+        }
+
+        .swatch-container:has(.attribute-swatch.selected) {
+          border: 1px solid green;
+        }
+      }
+    }
+  }
+}

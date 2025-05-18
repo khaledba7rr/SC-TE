@@ -2,3 +2,19 @@
   height: 150px;
   width: 350px;
 }
+
+.checkout-section {
+  .checkout-btn {
+    background-color: #5ece7b;
+    color: white;
+    font-size: 14px;
+    font-family: 'raleway', sans-serif;
+    font-weight: 600;
+    padding: 16px 32px;
+    border: none;
+    outline: none;
+    text-decoration: none;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+}

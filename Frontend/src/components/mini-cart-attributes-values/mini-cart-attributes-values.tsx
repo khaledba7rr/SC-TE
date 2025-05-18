@@ -4,12 +4,14 @@ import AttributeValue from "../../types/attribute-value";
 interface MiniCartAttributesValuesProps {
     attribute: Attribute;
     selectedAttributeValueId: number | undefined;
+    forOrders?: boolean;
 }
 
 
 const MiniCartAttributesValues: React.FC<MiniCartAttributesValuesProps> = ({
     attribute,
     selectedAttributeValueId,
+    forOrders = false,
 }) =>
 {
 
@@ -24,7 +26,7 @@ const MiniCartAttributesValues: React.FC<MiniCartAttributesValuesProps> = ({
         if (attributeType === "text")
         {
             return <> 
-                    <div className="attribute-values-text d-flex">
+                    <div className={`attribute-values-text d-flex`}>
                         {attribute.values.map((value: AttributeValue, index) => (
                             <div key={value.id ? value.id : `${value.displayValue}-${index}`} className={`attribute-text m-1 p-2 d-flex justify-content-center align-items-center  ${selectedAttributeValueId === value.id && 'selected'}`} >
                                 <div data-testid={`cart-item-attribute-${GetKebakAttributeName()}-${GetKebakAttributeName() + (selectedAttributeValueId === value.id ? '-selected' : '') }`} >{value.value}</div>
@@ -52,8 +54,8 @@ const MiniCartAttributesValues: React.FC<MiniCartAttributesValuesProps> = ({
 
     return (<>
         
-        <div className="product-attributes">
-            <div className='attribute-name' data-testid={`cart-item-attribute-${GetKebakAttributeName()}`}> { attribute.name } : </div>
+        <div className={`product-attributes ${forOrders ? 'd-flex justify-content-around align-items-center mx-2 my-2' : ''}`}>
+            <div className={`attribute-name ${forOrders ? 'mx-4' : ''}`} data-testid={`cart-item-attribute-${GetKebakAttributeName()}`}> { attribute.name } : </div>
             <div className='attribute-values'>
                 { GetAttributeValues(attribute.type) }
             </div>

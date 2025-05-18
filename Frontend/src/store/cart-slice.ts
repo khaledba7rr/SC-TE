@@ -6,12 +6,17 @@ interface CartState {
   items: CartItem[];
   isCartOpen: boolean;
   allProducts: Product[];
+  orderProcessFailed: boolean;
+  orderProcessSuccess: boolean;
 }
+
 
 const initialState: CartState = {
   items: [],
   isCartOpen: false,
-  allProducts : [],
+  allProducts: [],
+  orderProcessFailed: false,
+  orderProcessSuccess: false
 };
 
 const cartSlice = createSlice({
@@ -30,15 +35,10 @@ const cartSlice = createSlice({
         attributes: sortedAttributes
       };
 
-      console.log("NORM ATTR : ", JSON.stringify(normalizedItem.attributes));
-
-
       const existingItem = state.items.find(item =>
         item.productId === normalizedItem.productId &&
         JSON.stringify(item.attributes) === JSON.stringify(normalizedItem.attributes)
       );
-
-      console.log("EXISTING ITEM : ", JSON.stringify(existingItem));
 
       // IF product with the same ID exists before and added to the cart before : 
       if (existingItem)
@@ -139,10 +139,20 @@ const cartSlice = createSlice({
       state.allProducts = action.payload;
     },
 
+    setOrderProccessFailed (state , action: PayloadAction<boolean>)
+    {
+      state.orderProcessFailed = action.payload;
+    },
+
+    setOrderProccessSuccess (state , action: PayloadAction<boolean>)
+    {
+      state.orderProcessSuccess = action.payload;
+    }
+
   },
 
 });
 
-export const { addItem, increaseQuantity, decreaseQuantity, clearCart, closeCart, toggleCart, setAllProducts, openCart } = cartSlice.actions;
+export const { addItem, increaseQuantity, decreaseQuantity, clearCart, closeCart, toggleCart, setAllProducts, openCart , setOrderProccessFailed, setOrderProccessSuccess } = cartSlice.actions;
 
 export default cartSlice.reducer;

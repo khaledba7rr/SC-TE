@@ -63,6 +63,19 @@
     object-fit: fill;
     aspect-ratio: 3/2;
   }
+
+  .prod-img-container {
+    .product-card-image-loader {
+      .loading-container {
+        min-height: auto !important;
+        height: 100%;
+      }
+    }
+  }
+}
+
+.card:hover {
+  
 }
 
 .card.out-of-stock {
