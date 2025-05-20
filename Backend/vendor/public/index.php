@@ -24,13 +24,6 @@ echo json_encode([
     'uri' => $_SERVER['REQUEST_URI']
 ]);
 
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    echo "POST REQUEST RECEIVED";
-} else {
-    echo "Only POST REQUESTS ALLOWED !";
-}
-
 $productObject = new Product();
 $attributeObject = new Attribute();
 $categoryObject = new Category();
@@ -51,7 +44,6 @@ $rootValue = [
 $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
     // Make sure to use the correct HTTP method (POST)
     $r->addRoute('POST', '/graphql', [GraphQLController::class, 'handle']);
-    $r->addRoute('GET', '/graphql', [GraphQLController::class, 'handle']);
 });
 
 // Dispatch the request
