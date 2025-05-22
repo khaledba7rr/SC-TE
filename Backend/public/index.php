@@ -1,14 +1,5 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
-
-use Model\Product;
-use Model\Attribute;
-use Model\Category;
-use Model\Order;
-use GraphQL\Utils\BuildSchema;
-use Controller\GraphQLController;
-
 header("Access-Control-Allow-Origin: *"); // Allow all domains (for development, change '*' to specific domain for production)
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
@@ -19,17 +10,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit();
 }
 
-echo json_encode([
-    'method' => $_SERVER['REQUEST_METHOD'],
-    'uri' => $_SERVER['REQUEST_URI']
-]);
+require_once __DIR__ . '/../vendor/autoload.php';
 
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    echo "POST REQUEST RECEIVED";
-} else {
-    echo "Only POST REQUESTS ALLOWED !";
-}
+use Model\Product;
+use Model\Attribute;
+use Model\Category;
+use Model\Order;
+use GraphQL\Utils\BuildSchema;
+use Controller\GraphQLController;
 
 $productObject = new Product();
 $attributeObject = new Attribute();
@@ -51,7 +39,6 @@ $rootValue = [
 $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
     // Make sure to use the correct HTTP method (POST)
     $r->addRoute('POST', '/graphql', [GraphQLController::class, 'handle']);
-    $r->addRoute('GET', '/graphql', [GraphQLController::class, 'handle']);
 });
 
 // Dispatch the request
