@@ -145,6 +145,7 @@ const App = () =>{
           <Route path="/orders" element={<Orders /> } />
           
           <Route path="*" element={<NotFound />} />
+          <Route path="/:categoryName" element={<ProductsListingPage products={products} categoryName={currentCategory} error={isError} />} />
       </Routes>
         <div>
           {showErrorNotifierMessage && <ToasterNotifier title="Couldn't create the order !" messageDetails="An error occurred while creating the order." isSuccess={false} />}

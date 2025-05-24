@@ -48,7 +48,7 @@ const Header: React.FC<HeaderProps> = ({ onCategoryChange , currentCategory, cat
 
                 {categories.map(category => (
                     <li key={category.id} className="nav-item fs-4">
-                    <Link data-testid={category.name === currentCategory ? 'active-category-link' : 'category-link'} to="/" className={`nav-link ${category.name === currentCategory && 'active'}`} aria-current="page" onClick={() => onCategoryChange(category.name)} >
+                    <Link data-testid={category.name === currentCategory ? 'active-category-link' : 'category-link'} to={`/${category.name}`} className={`nav-link ${category.name === currentCategory && 'active'}`} aria-current="page" onClick={() => onCategoryChange(category.name)} >
                         {category.name }
                       </Link>
                     </li>
