@@ -63,7 +63,7 @@ const AttributeValues: React.FC<HeaderProps> = ({ type, attributeValues, attribu
             className={`attribute-text m-1 p-3 d-flex justify-content-center align-items-center  ${GetSelectedAttribute(attribute.id) === value.id && 'selected'}`}
             onClick={() => HandleAttributeSelection(attribute.id, value.id)}
         >
-          <div>{value.displayValue}</div>
+          <div data-testid={`product-attribute-${attribute.name.toLowerCase().replace(/\s+/g, "-")}-${value.displayValue}`} >{value.displayValue}</div>
         </div>
       ))}
     </div>
@@ -77,6 +77,7 @@ const AttributeValues: React.FC<HeaderProps> = ({ type, attributeValues, attribu
           <div 
             className={`attribute-swatch m-1 ${GetSelectedAttribute(attribute.id) === value.id && 'selected'}`}
             style={{ backgroundColor: value.value }}
+            data-testid={`product-attribute-${attribute.name.toLowerCase().replace(/\s+/g, "-")}-${value.displayValue}`}
             onClick={() => HandleAttributeSelection(attribute.id, value.id)}
           />
         </div>

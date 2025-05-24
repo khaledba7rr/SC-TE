@@ -70,7 +70,7 @@ const Header: React.FC<HeaderProps> = ({ onCategoryChange , currentCategory, cat
       </div>
 
 
-      <div id='overlay' onClick={() => dispatch(closeCart())} className={`overlay ${isCartOpen ? 'd-block' : 'd-none'}`} >
+      <div id='overlay' data-testid='cart-overlay' onClick={() => dispatch(closeCart())} className={`overlay ${isCartOpen ? 'd-block' : 'd-none'}`} >
 
       </div>
 
