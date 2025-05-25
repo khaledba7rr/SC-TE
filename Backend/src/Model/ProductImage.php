@@ -20,8 +20,6 @@ class ProductImage
             $stmt->bindParam(':id', $id);
             $stmt->execute();
 
-            echo $stmt->errorInfo()[2];
-
             return $stmt->fetchAll(\PDO::FETCH_ASSOC);
         } catch (\Throwable $e) {
             echo "Error: " . $e->getMessage();

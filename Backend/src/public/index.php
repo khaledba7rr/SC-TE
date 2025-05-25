@@ -19,11 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit();
 }
 
-echo json_encode([
-    'method' => $_SERVER['REQUEST_METHOD'],
-    'uri' => $_SERVER['REQUEST_URI']
-]);
-
 $productObject = new Product();
 $attributeObject = new Attribute();
 $categoryObject = new Category();
@@ -54,8 +49,6 @@ switch ($routeInfo[0]) {
     case FastRoute\Dispatcher::NOT_FOUND:
         // Handle 404
         header("HTTP/1.1 404 Not Found");
-        echo json_encode(['error' => 'ERRORR!!']);
-        echo json_encode($routeInfo[0]);
         echo json_encode(['error' => 'Route not found']);
         break;
     case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
