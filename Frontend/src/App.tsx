@@ -19,7 +19,6 @@ import {
 
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from './store/index.ts';
-import Orders from './views/Orders/Orders.tsx';
 
 const dummmyProducts: Product[] = [];
 
@@ -179,7 +178,6 @@ const App = () => {
           path="/product/:id"
           element={<ProductDetailRoute products={products} />}
         />
-        <Route path="/orders" element={<Orders />} />
 
         <Route path="*" element={<NotFound />} />
         <Route
