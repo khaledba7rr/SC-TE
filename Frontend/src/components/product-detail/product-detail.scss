@@ -32,6 +32,7 @@
           height: 32px;
           width: 32px;
           padding: 0;
+          margin: 2px 2px;
         }
 
         .swatch-container:has(.attribute-swatch.selected) {
@@ -82,12 +83,10 @@
     .thumbs-container {
       .sinlge-thumb-container {
         cursor: pointer;
-        border: 1px solid #000;
       }
       .sinlge-thumb-container.selected {
-        border: #5ece7b 3px solid;
+        border: #5ece7b 1px solid;
         border-radius: 5px;
-        padding: 5px;
       }
     }
 
@@ -100,11 +99,13 @@
 
   .main-image {
     min-width: 75%;
+    height: max-content;
     .main-image-container {
+      max-height: 850px;
+      padding: 25px;
       .main-image {
-        width: 100%;
-        aspect-ratio: 3/2;
-        object-fit: fill;
+        max-height: 100%;
+        aspect-ratio: 5/5;
       }
     }
 

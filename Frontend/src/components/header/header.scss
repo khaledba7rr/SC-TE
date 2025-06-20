@@ -3,6 +3,7 @@ header {
     .nav-item {
       cursor: pointer;
       .active {
+        color: #5ece7b;
         border-bottom: 2px solid #5ece7b;
       }
     }

@@ -10,13 +10,12 @@ interface CartState {
   orderProcessSuccess: boolean;
 }
 
-
 const initialState: CartState = {
   items: [],
   isCartOpen: false,
   allProducts: [],
   orderProcessFailed: false,
-  orderProcessSuccess: false
+  orderProcessSuccess: false,
 };
 
 const cartSlice = createSlice({
@@ -24,35 +23,43 @@ const cartSlice = createSlice({
   initialState,
 
   reducers: {
-
-    addItem(state, action: PayloadAction<CartItem>)
-    {
-
-      const sortedAttributes = [...action.payload.attributes].sort((a, b) => a.attribute_id - b.attribute_id);
+    addItem(state, action: PayloadAction<CartItem>) {
+      const sortedAttributes = [...action.payload.attributes].sort(
+        (a, b) => a.attribute_id - b.attribute_id,
+      );
 
       const normalizedItem: CartItem = {
         ...action.payload,
-        attributes: sortedAttributes
+        attributes: sortedAttributes,
       };
 
-      const existingItem = state.items.find(item =>
-        item.productId === normalizedItem.productId &&
-        JSON.stringify(item.attributes) === JSON.stringify(normalizedItem.attributes)
+      const existingItem = state.items.find(
+        item =>
+          item.productId === normalizedItem.productId &&
+          JSON.stringify(item.attributes) ===
+            JSON.stringify(normalizedItem.attributes),
       );
 
-      // IF product with the same ID exists before and added to the cart before : 
-      if (existingItem)
-      {
+      // IF product with the same ID exists before and added to the cart before :
+      if (existingItem) {
         // IF product with the same ID exists before with same attributes
-        const sortedExistingProductAttributes = [...existingItem.attributes].sort((a, b) => a.attribute_id - b.attribute_id);
-        const sortedNewProductAttributes = [...normalizedItem.attributes].sort((a, b) => a.attribute_id - b.attribute_id);
+        const sortedExistingProductAttributes = [
+          ...existingItem.attributes,
+        ].sort((a, b) => a.attribute_id - b.attribute_id);
+        const sortedNewProductAttributes = [...normalizedItem.attributes].sort(
+          (a, b) => a.attribute_id - b.attribute_id,
+        );
 
-        const areTheSameAttributesExactly = sortedExistingProductAttributes.every((attr, index) => {
-          return attr.attribute_id === sortedNewProductAttributes[index].attribute_id && attr.value_id === sortedNewProductAttributes[index].value_id;
-        });
+        const areTheSameAttributesExactly =
+          sortedExistingProductAttributes.every((attr, index) => {
+            return (
+              attr.attribute_id ===
+                sortedNewProductAttributes[index].attribute_id &&
+              attr.value_id === sortedNewProductAttributes[index].value_id
+            );
+          });
 
-        if (areTheSameAttributesExactly)
-        {
+        if (areTheSameAttributesExactly) {
           existingItem.quantity += normalizedItem.quantity;
           return;
         }
@@ -63,96 +70,97 @@ const cartSlice = createSlice({
         return;
       }
 
-        state.items.push(normalizedItem);
-
+      state.items.push(normalizedItem);
     },
 
-    increaseQuantity(state, action: PayloadAction<CartItem>)
-    {
-
-      const sortedAttributes = [...action.payload.attributes].sort((a, b) => a.attribute_id - b.attribute_id);
+    increaseQuantity(state, action: PayloadAction<CartItem>) {
+      const sortedAttributes = [...action.payload.attributes].sort(
+        (a, b) => a.attribute_id - b.attribute_id,
+      );
 
       const normalizedItem: CartItem = {
         ...action.payload,
-        attributes: sortedAttributes
+        attributes: sortedAttributes,
       };
-      
-      const existingItem = state.items.find(item =>
-        item.productId === normalizedItem.productId &&
-        JSON.stringify(item.attributes) === JSON.stringify(normalizedItem.attributes)
+
+      const existingItem = state.items.find(
+        item =>
+          item.productId === normalizedItem.productId &&
+          JSON.stringify(item.attributes) ===
+            JSON.stringify(normalizedItem.attributes),
       );
 
-      if (existingItem)
-      {
+      if (existingItem) {
         existingItem.quantity += 1;
       }
     },
 
-    decreaseQuantity(state, action: PayloadAction<CartItem>)
-    {
-      
-      const sortedAttributes = [...action.payload.attributes].sort((a, b) => a.attribute_id - b.attribute_id);
+    decreaseQuantity(state, action: PayloadAction<CartItem>) {
+      const sortedAttributes = [...action.payload.attributes].sort(
+        (a, b) => a.attribute_id - b.attribute_id,
+      );
 
       const normalizedItem: CartItem = {
         ...action.payload,
-        attributes: sortedAttributes
+        attributes: sortedAttributes,
       };
-      
-      const existingItem = state.items.find(item =>
-        item.productId === normalizedItem.productId &&
-        JSON.stringify(item.attributes) === JSON.stringify(normalizedItem.attributes)
+
+      const existingItem = state.items.find(
+        item =>
+          item.productId === normalizedItem.productId &&
+          JSON.stringify(item.attributes) ===
+            JSON.stringify(normalizedItem.attributes),
       );
 
-      if (existingItem && existingItem.quantity > 1)
-      {
+      if (existingItem && existingItem.quantity > 1) {
         existingItem.quantity -= 1;
         return;
-      }
-      else if (existingItem && existingItem.quantity === 1)
-      {
-        state.items = state.items.filter((item) => item !== existingItem);
+      } else if (existingItem && existingItem.quantity === 1) {
+        state.items = state.items.filter(item => item !== existingItem);
       }
     },
-    
-    clearCart(state)
-    {
+
+    clearCart(state) {
       state.items = [];
     },
 
-    closeCart(state)
-    {
+    closeCart(state) {
       state.isCartOpen = false;
     },
 
-    toggleCart(state)
-    {
+    toggleCart(state) {
       state.isCartOpen = !state.isCartOpen;
     },
 
-    openCart(state)
-    {
+    openCart(state) {
       state.isCartOpen = true;
     },
 
-    setAllProducts(state, action: PayloadAction<Product[]>)
-    {
+    setAllProducts(state, action: PayloadAction<Product[]>) {
       state.allProducts = action.payload;
     },
 
-    setOrderProccessFailed (state , action: PayloadAction<boolean>)
-    {
+    setOrderProccessFailed(state, action: PayloadAction<boolean>) {
       state.orderProcessFailed = action.payload;
     },
 
-    setOrderProccessSuccess (state , action: PayloadAction<boolean>)
-    {
+    setOrderProccessSuccess(state, action: PayloadAction<boolean>) {
       state.orderProcessSuccess = action.payload;
-    }
-
+    },
   },
-
 });
 
-export const { addItem, increaseQuantity, decreaseQuantity, clearCart, closeCart, toggleCart, setAllProducts, openCart , setOrderProccessFailed, setOrderProccessSuccess } = cartSlice.actions;
+export const {
+  addItem,
+  increaseQuantity,
+  decreaseQuantity,
+  clearCart,
+  closeCart,
+  toggleCart,
+  setAllProducts,
+  openCart,
+  setOrderProccessFailed,
+  setOrderProccessSuccess,
+} = cartSlice.actions;
 
 export default cartSlice.reducer;

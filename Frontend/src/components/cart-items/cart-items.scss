@@ -123,6 +123,13 @@
         outline: none;
         cursor: pointer;
         text-transform: uppercase;
+
+        &:disabled {
+          background-color: #cccccc;
+          color: black;
+          cursor: not-allowed;
+          opacity: 0.9;
+        }
       }
     }
   }

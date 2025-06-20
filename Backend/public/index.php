@@ -17,7 +17,7 @@ use Model\Attribute;
 use Model\Category;
 use Model\Order;
 use GraphQL\Utils\BuildSchema;
-use Controller\GraphQLController;
+use Controller\GraphQL;
 
 $productObject = new Product();
 $attributeObject = new Attribute();
@@ -38,7 +38,7 @@ $rootValue = [
 // Set up FastRoute
 $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
     // Make sure to use the correct HTTP method (POST)
-    $r->addRoute('POST', '/graphql', [GraphQLController::class, 'handle']);
+    $r->addRoute('POST', '/graphql', [GraphQL::class, 'handle']);
 });
 
 // Dispatch the request
@@ -58,7 +58,7 @@ switch ($routeInfo[0]) {
         break;
     case FastRoute\Dispatcher::FOUND:
         // Instantiate controller and call the handle method
-        $controller = new GraphQLController($schema, $rootValue);
+        $controller = new GraphQL($schema, $rootValue);
         echo $controller->handle();
         break;
 }
