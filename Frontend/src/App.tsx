@@ -11,10 +11,10 @@ import ErrorComponent from './components/error/error.tsx';
 import Loading from './components/loading/loading.tsx';
 import { categoriesQuery } from './constants/graphql-queries.ts';
 
+import ToasterNotifier from './components/toast-notifier/toast-notifier.tsx';
+
 import {
   setAllProducts,
-  setOrderProccessFailed,
-  setOrderProccessSuccess,
 } from './store/cart-slice.ts';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -42,23 +42,23 @@ const App = () => {
 
   const dispatch = useDispatch();
 
-  const HandleSetError = (value: boolean) => {
+  const handleSetError = (value: boolean) => {
     setIsError(value);
   };
 
-  const HandleSetLoading = (value: boolean) => {
+  const handleSetLoading = (value: boolean) => {
     setIsLoading(value);
   };
 
-  const HandleChangeCategory = (selectedCategoryName: string) => {
+  const handleChangeCategory = (selectedCategoryName: string) => {
     setCutrentCategory(selectedCategoryName);
   };
 
-  const HandleProductsChange = (products: Product[]) => {
+  const handleProductsChange = (products: Product[]) => {
     setProducts(products);
   };
 
-  const HandleSaveAllProductsInState = useCallback(
+  const handleSaveAllProductsInState = useCallback(
     (products: Product[]) => {
       dispatch(setAllProducts(products));
     },
@@ -67,60 +67,18 @@ const App = () => {
 
   const { data, error, loading } = useQuery(categoriesQuery);
 
-  type ToasterNotifierArguments = {
-    title: string;
-    messageDetails: string;
-    isSuccess: boolean;
-  };
-
-  const ToasterNotifier: React.FC<ToasterNotifierArguments> = ({
-    title,
-    messageDetails,
-    isSuccess,
-  }) => {
-    setTimeout(() => {
-      HandleRemoveNotifiers();
-    }, 5000);
-    return (
-      <div className="error-popup-container d-block">
-        <div className="toast-container d-block position-fixed bottom-0 end-0 p-4">
-          <div id="liveToast" className="toast d-block">
-            <div
-              className={`toast-header ${!isSuccess ? 'bg-danger' : 'bg-success'}`}
-            >
-              <i className="bi bi-exclamation-octagon-fill px-2"></i>
-              <strong className="me-auto">{title}</strong>
-              <small>{!isSuccess ? 'Error' : 'Success'}</small>
-              <button
-                type="button"
-                className="btn-close"
-                onClick={HandleRemoveNotifiers}
-              ></button>
-            </div>
-            <div className="toast-body">{messageDetails}</div>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  const HandleRemoveNotifiers = () => {
-    dispatch(setOrderProccessFailed(false));
-    dispatch(setOrderProccessSuccess(false));
-  };
-
   useEffect(() => {
     setShowErrorNotifierMessage(orderProcessFailed);
     setShowSuccessNotifierMessage(orderProcessSuccess);
 
     if (error) {
-      HandleSetError(true);
-      HandleSetLoading(false);
+      handleSetError(true);
+      handleSetLoading(false);
       return;
     }
 
     if (loading) {
-      HandleSetLoading(true);
+      handleSetLoading(true);
       return;
     }
 
@@ -134,11 +92,11 @@ const App = () => {
       );
 
       if (allCategory) {
-        HandleSaveAllProductsInState(allCategory.products);
+        handleSaveAllProductsInState(allCategory.products);
       }
 
       if (selectedCategory) {
-        HandleProductsChange(selectedCategory.products);
+        handleProductsChange(selectedCategory.products);
       } else {
         setProducts([]); // fallback if category not found
       }
@@ -149,7 +107,7 @@ const App = () => {
     error,
     loading,
     currentCategory,
-    HandleSaveAllProductsInState,
+    handleSaveAllProductsInState,
     orderProcessFailed,
     orderProcessSuccess,
   ]);
@@ -157,7 +115,7 @@ const App = () => {
   return (
     <>
       <Header
-        onCategoryChange={HandleChangeCategory}
+        onCategoryChange={handleChangeCategory}
         currentCategory={currentCategory}
         categories={data ? data.categories : []}
       />
@@ -212,9 +170,8 @@ const App = () => {
 };
 
 const ProductDetailRoute = ({ products }: { products: Product[] }) => {
-  const { id } = useParams(); // Get the id from the URL
+  const { id } = useParams();
 
-  // Find the product matching the id from the URL
   const product = products.find(product => product.id === id);
 
   if (!product) {
