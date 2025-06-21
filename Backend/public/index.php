@@ -16,7 +16,7 @@ use Model\Product;
 use Model\Attribute;
 use Model\Category;
 use Model\Order;
-use GraphQL\Utils\BuildSchema;
+use Graphql\SchemaFactory;
 use Controller\GraphQL;
 
 $productObject = new Product();
@@ -24,7 +24,7 @@ $attributeObject = new Attribute();
 $categoryObject = new Category();
 $orderObject = new Order();
 
-$schema = BuildSchema::build(file_get_contents(__DIR__ . '/../src/Graphql/schema.graphql'));
+$schema = SchemaFactory::create();
 
 $rootValue = [
     'products' => fn() => $productObject->getAllProducts(),
