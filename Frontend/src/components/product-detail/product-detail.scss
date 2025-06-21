@@ -98,19 +98,20 @@
   }
 
   .main-image {
-    min-width: 75%;
+    min-width: 85%;
     height: max-content;
     .main-image-container {
-      max-height: 850px;
-      padding: 25px;
+      aspect-ratio: 3/2;
+      padding: 0;
       .main-image {
         max-height: 100%;
+        max-width: 100%;
         aspect-ratio: 5/5;
       }
     }
 
     .carousel-container {
-      width: 1500px;
+      width: 100%;
       position: absolute;
       top: 50%;
       left: 0%;

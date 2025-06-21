@@ -179,7 +179,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
             </div>
 
             <div
-              className={`carousel-container ${product.images.length > 1 ? 'd-block' : 'd-none'} position-absolute w-100`}
+              className={`carousel-container ${product.images.length > 1 ? 'd-block' : 'd-none'} position-absolute`}
             >
               <div className="carousel-buttons-container d-flex justify-content-between px-5">
                 <button
