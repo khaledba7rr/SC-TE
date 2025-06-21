@@ -75,11 +75,13 @@
               .attribute-swatch {
                 height: 16px;
                 width: 16px;
+                margin: 1px;
                 padding: 0;
               }
 
               .swatch-container:has(.attribute-swatch.selected) {
-                border: 1px solid green;
+                border: 1px solid #5ece7b;
+                padding: 0;
               }
             }
           }

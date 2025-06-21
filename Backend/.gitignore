@@ -1,0 +1,33 @@
+# Composer dependencies
+/vendor/
+
+# Logs
+*.log
+
+# Cache
+*.cache
+
+# IDE and editor files
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# PHPUnit
+.phpunit.result.cache
+
+# Node modules (if using frontend assets)
+node_modules/
+
+# Coverage reports
+coverage/
+.clover
+.phpunit.cache
+
+# User uploaded files (customize as needed)
+public/uploads/
+public/storage/
