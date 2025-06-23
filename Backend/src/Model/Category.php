@@ -22,7 +22,8 @@ class Category
 
         $categoreis = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
-        $productObject = new Product();
+        // Pass the required argument to the Product constructor
+        $productObject = new Product(['id' => '1', 'name' => 'all', 'description' => '']);
 
         foreach ($categoreis as &$category) {
             // Nested resolution for products

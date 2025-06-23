@@ -19,7 +19,7 @@ use Model\Order;
 use Graphql\SchemaFactory;
 use Controller\GraphQL;
 
-$productObject = new Product();
+$productObject = new Product(['id' => $args['id'], 'name' => $args['name'], 'description' => $args['description']]);
 $attributeObject = new Attribute();
 $categoryObject = new Category();
 $orderObject = new Order();

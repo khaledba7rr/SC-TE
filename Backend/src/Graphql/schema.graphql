@@ -20,6 +20,21 @@ type Product {
   attributes: [Attribute]
   images: [Image!]
   prices: [ProductPrice]!
+  type: String!
+}
+
+type ElectronicProduct implements Product {
+  id: ID!
+  name: String!
+  description: String!
+  type: String!
+}
+
+type ClothingProduct implements Product {
+  id: ID!
+  name: String!
+  description: String!
+  type: String!
 }
 
 type Category {

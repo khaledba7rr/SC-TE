@@ -2,27 +2,31 @@
 
 namespace Model;
 
+use Factory\ProductFactory;
 use Database\DatabaseConnection;
 
-class Product
+abstract class Product
 {
-    public function __construct() {}
+    protected string $id;
+    protected string $name;
+    protected string $description;
 
-    public function getAllProducts()
+
+    public function __construct(array $data)
+    {
+        $this->id = $data['id'];
+        $this->name = $data['name'];
+        $this->description = $data['description'];
+    }
+    abstract public function getType(): string;
+
+
+    public function getAllProducts(): array
     {
         $db = new DatabaseConnection();
-
         $pdo = $db->getConnection();
-
-        $query = "SELECT * FROM products";
-        $stmt = $pdo->prepare($query);
-        $stmt->execute();
-
-        $products = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-
-        $products = $this->getNestedFieldsForProducts($products);
-
-        return $products;
+        $rows = $this->$db->query("SELECT * FROM products")->fetchAll();
+        return array_map(fn($row) => ProductFactory::create($row), $rows);
     }
 
     public function getProductById(string $id)
