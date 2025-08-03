@@ -21,7 +21,6 @@ const ProductsListingPage: React.FC<ProductsListingProps> = ({
     if (error) return <Error />;
   }
   return (
-    <>
       <div id="main-container" className="products-listing">
         <h1 className="category-title-plp mb-5">{categoryName}</h1>
         <div className="products-container my-5 px-3 row row-cols-1 row-cols-lg-4 row-cols-md-2 row-cols-sm-1 g-5">
@@ -30,17 +29,6 @@ const ProductsListingPage: React.FC<ProductsListingProps> = ({
           ))}
         </div>
       </div>
-
-      <div className='hero-image'>
-        <img src={image} alt='khaledba7r'/>
-        <caption className='hero-image-caption'>Khaled Ba7r</caption>
-        <div className='caption'>
-          <h2>Egyptian entrepeneur</h2>
-          <p>deep cinematic portrait khaled ba7r</p>
-        </div>
-      </div>
-    </>
-    
   );
 };
 
