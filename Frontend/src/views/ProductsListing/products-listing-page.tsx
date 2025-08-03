@@ -1,10 +1,8 @@
-import React from 'react';
 import Product from '../../types/product.tsx';
 import './products-listing-page.scss';
 import ProductCard from '../../components/product-card/product-card.tsx';
 import Error from '../../components/error/error.tsx';
 
-import image from '../../../public/khaled-ba7r-profile.jpg';
 
 interface ProductsListingProps {
   products: Product[];
