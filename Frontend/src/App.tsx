@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
 import Header from './components/header/header.tsx';
-import Product from './types/product.tsx';
 import NotFound from './views/NotFound/not-found.tsx';
 import ProductsListingPage from './views/ProductsListing/products-listing-page.tsx';
 import ProductDetailsPage from './views/product-details/product-details-page.tsx';
-import { Routes, Route, useParams } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 import ToasterNotifier from './components/toast-notifier/toast-notifier.tsx';
 
@@ -13,8 +12,6 @@ import { RootState } from './store/index.ts';
 
 const App = () => {
   const [currentCategory, setCutrentCategory] = useState<string>('all');
-  const [products, setProducts] = useState<Product[]>([]);
-
   const [showErrorNotifierMessage, setShowErrorNotifierMessage] =
     useState<boolean>(false);
   const [showSuccessNotifierMessage, setShowSuccessNotifierMessage] =
