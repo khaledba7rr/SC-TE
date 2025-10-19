@@ -7,7 +7,7 @@ import { useMutation } from '@apollo/client';
 
 import './cart-items.scss';
 import CartItem from '../../types/cart-items';
-import { orderQuery } from '../../constants/graphql-queries';
+import { createOrderMutation } from '../../constants/graphql-queries';
 import Loading from '../loading/loading';
 
 import {
@@ -20,18 +20,18 @@ const CartItems: React.FC<{ itemsLength: number }> = ({ itemsLength }) => {
   const dispatch = useDispatch();
 
   const cartItems = useSelector((state: RootState) => state.cart.items);
-  const allProducts = useSelector((state: RootState) => state.cart.allProducts);
+  const allProducts = useSelector((state: RootState) => state.cart.allProducts ?? []);
   const itemsCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
   const itemsTotal = cartItems.reduce(
     (acc, item) =>
       acc +
       item.quantity *
-        (allProducts.find(product => product.id === item.productId)?.prices[0]
+        (allProducts?.find(product => product.id === item.productId)?.prices[0]
           .price ?? 0),
     0,
   );
 
-  const [createOrder, { loading }] = useMutation(orderQuery);
+  const [createOrder, { loading }] = useMutation(createOrderMutation);
 
   const handleCreateOrder = (cartItems: CartItem[]) => {
     const orderItems = cartItems.map(item => ({
@@ -47,6 +47,8 @@ const CartItems: React.FC<{ itemsLength: number }> = ({ itemsLength }) => {
       })),
     }));
 
+    console.log(orderItems);
+
     createOrder({
       variables: {
         input: {
@@ -57,7 +59,9 @@ const CartItems: React.FC<{ itemsLength: number }> = ({ itemsLength }) => {
         },
       },
     })
-      .then(response => {
+      .then(response =>
+      {
+        console.log("Order creation response:", response);
         if (response.data.CreateOrder) {
           dispatch(setOrderProccessSuccess(true));
           dispatch(clearCart());
@@ -66,12 +70,12 @@ const CartItems: React.FC<{ itemsLength: number }> = ({ itemsLength }) => {
         }
       })
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      .catch(_ => dispatch(setOrderProccessFailed(true)));
+      .catch(_ => { console.log(_); dispatch(setOrderProccessFailed(true)); });
   };
 
   return (
     <>
-      {loading && <Loading />}
+      {loading && <Loading />}  
       <div className="d-flex bag-title">
         <p>
           {' '}

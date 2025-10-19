@@ -32,6 +32,7 @@ const MiniCartAttributeValues: React.FC<MiniCartAttributeValuesProps> = ({
             }`}
           >
             <div
+              key={value.id}
               data-testid={`cart-item-attribute-${getKebakAttributeName()}-${
                 getKebakAttributeName() +
                 (selectedAttributeValueId === value.id ? '-selected' : '')
@@ -54,6 +55,7 @@ const MiniCartAttributeValues: React.FC<MiniCartAttributeValuesProps> = ({
             className="swatch-container"
           >
             <div
+              key={value.id}
               className={`attribute-swatch ${
                 selectedAttributeValueId === value.id && 'selected'
               }`}

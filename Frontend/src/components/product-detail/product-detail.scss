@@ -84,10 +84,10 @@
       .sinlge-thumb-container {
         cursor: pointer;
       }
-      .sinlge-thumb-container.selected {
-        border: #5ece7b 1px solid;
-        border-radius: 5px;
-      }
+      // .sinlge-thumb-container.selected {
+      //   border: #5ece7b 1px solid;
+      //   border-radius: 5px;
+      // }
     }
 
     .image {
@@ -99,14 +99,13 @@
 
   .main-image {
     min-width: 85%;
-    height: max-content;
     .main-image-container {
       aspect-ratio: 3/2;
-      padding: 0;
+      min-width: 85%;
       .main-image {
         max-height: 100%;
         max-width: 100%;
-        aspect-ratio: 5/5;
+        object-fit: contain;
       }
     }
 

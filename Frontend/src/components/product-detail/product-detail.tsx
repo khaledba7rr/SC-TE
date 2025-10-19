@@ -13,9 +13,15 @@ interface ProductDetailProps {
   product: Product;
 }
 
-const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
-  const { price, symbol } = product.prices[0];
-  const { name, description } = product;
+const ProductDetail: React.FC<ProductDetailProps> = ({ product }) =>
+{
+  
+  if (!product || Object.keys(product).length === 0) {
+    return <div>Loading...</div>;
+  }
+
+  const { price, symbol } = product?.prices?.[0] ?? { price: 0, symbol: '' };
+  const { name, description } = product ?? { name: '', description: '' };
 
   const handleSetShowErrorMessage = (value: boolean) => {
     setShowErrorMessage(value);
@@ -25,7 +31,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
   };
 
   const [currentImageUrl, setCurrentImageUrl] = useState<string>(
-    product.images[0].url,
+    product?.images?.[0]?.url ?? '',
   );
   const [isImageLoaded, setIsImageLoaded] = useState<boolean>(false);
   const [productSelection, setProductSelection] = useState<
@@ -151,7 +157,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
             data-testid="product-gallery"
           >
             <div className="thumbs-container d-flex flex-wrap flex-md-column justify-content-end align-items-center">
-              {product.images.map(image => (
+              { product.images && product.images.map(image => (
                 <div
                   key={image.url}
                   className={`sinlge-thumb-container ${image.url === currentImageUrl && 'selected'} thumb-image m-1`}
@@ -169,36 +175,37 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
             </div>
           </div>
 
-          <div className="main-image p-3 w-75 position-relative">
-            <div className="main-image-container d-flex justify-content-center align-items-center">
+          <div className="main-image p-3 w-75 d-flex justify-content-center align-items-center">
+            <div className="main-image-container d-flex justify-content-center align-items-center position-relative">
               <img
                 src={currentImageUrl}
                 alt={product.name}
                 className="main-image"
               />
-            </div>
 
-            <div
-              className={`carousel-container ${product.images.length > 1 ? 'd-block' : 'd-none'} position-absolute`}
+                          <div
+              className={`carousel-container ${((product?.images?.length ?? 0) > 1) ? 'd-block' : 'd-none'} position-absolute`}
             >
               <div className="carousel-buttons-container d-flex justify-content-between px-5">
                 <button
                   onClick={() => handleCarouselClick('previous')}
                   className="p-1 border border-0"
                 >
-                  {' '}
-                  <i className="bi bi-chevron-compact-left fs-4"></i>{' '}
+                  <i className="bi bi-chevron-compact-left fs-4"></i>
                 </button>
 
                 <button
                   onClick={() => handleCarouselClick('next')}
                   className="p-1 border border-0"
                 >
-                  {' '}
-                  <i className="bi bi-chevron-compact-right fs-4"></i>{' '}
+                  <i className="bi bi-chevron-compact-right fs-4"></i>
                 </button>
               </div>
             </div>
+              
+            </div>
+
+
           </div>
         </div>
 
@@ -208,7 +215,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
           </div>
 
           <div className="product-attributes w-100 d-flex flex-column justify-content-md-between align-items-start align-items-md-start">
-            {product.attributes.map(attribute => (
+            { product.attributes && product?.attributes.map(attribute => (
               <div
                 key={attribute.id}
                 className="my-3"
@@ -256,7 +263,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
             className="product-description w-100"
             data-testid="product-description"
           >
-            {parse(description)}
+            {parse(typeof description === 'string' ? description : '')}
           </div>
         </div>
       </div>

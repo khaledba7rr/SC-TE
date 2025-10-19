@@ -22,7 +22,7 @@ const MiniCart: React.FC = () => {
           className="cart-toggle"
           onClick={() => dispatch(toggleCart())}
         >
-          <i className="bi bi-cart3 fs-2">
+          <i className="bi bi-cart3 fs-5">
             {itemsCount > 0 && (
               <span className="count-icon position-absolute translate-middle bg-dark rounded-circle">
                 {itemsCount}

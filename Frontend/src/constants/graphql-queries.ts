@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
-export const categoriesQuery = gql`
-  query {
+export const productsQuery = gql`
+  query ProductsList {
     categories {
       id
       name
@@ -35,6 +35,50 @@ export const categoriesQuery = gql`
   }
 `;
 
+export const categoriesQuery = gql`
+  query Categories {
+    categories {
+      id
+      name
+    }
+  }
+`;
+
+export const singleProductQuery = gql`
+  query CurrentProduct($id: String!) {
+    product(id: $id) {
+        id
+        name
+        description
+        in_stock
+        category_id
+        brand
+        prices {
+            currency
+            id
+            price
+            product_id
+            symbol
+        }
+        images {
+            id
+            product_id
+            url
+        }
+        attributes {
+            id
+            name
+            type
+            values {
+                displayValue
+                id
+                value
+            }
+        }
+    }
+  }
+`;
+
 export const ordersQuery = gql`
   query Orders {
     orders {
@@ -59,9 +103,9 @@ export const ordersQuery = gql`
   }
 `;
 
-export const orderQuery = gql`
+export const createOrderMutation = gql`
   mutation CreateOrder($input: OrderInput!) {
-    CreateOrder(input: $input) {
+    CreateOrder(input: $input){
       orderId
       totalPrice
       status

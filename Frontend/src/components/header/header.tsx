@@ -7,20 +7,23 @@ import MiniCart from '../mini-cart/mini-cart';
 import { closeCart } from '../../store/cart-slice';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/index';
+import { useQuery } from '@apollo/client';
+
+import { categoriesQuery } from '../../constants/graphql-queries';
 
 type HeaderProps = {
   onCategoryChange: (value: string) => void;
   currentCategory: string;
-  categories: Category[];
 };
 
 const Header: React.FC<HeaderProps> = ({
   onCategoryChange,
   currentCategory,
-  categories,
 }) => {
   const isCartOpen = useSelector((state: RootState) => state.cart.isCartOpen);
   const dispatch = useDispatch();
+
+  const categories: Category[] = useQuery(categoriesQuery).data?.categories || [];
 
   return (
     <header className="header">
@@ -54,9 +57,10 @@ const Header: React.FC<HeaderProps> = ({
                           : 'category-link'
                       }
                       to={`/${category.name}`}
-                      className={`nav-link ${category.name === currentCategory && 'active'}`}
+                      className={`nav-link pb-4 ${category.name === currentCategory && 'active'}`}
                       aria-current="page"
                       onClick={() => onCategoryChange(category.name)}
+                      onLoad={() => onCategoryChange(window.location.pathname.slice(1) || 'all')}
                     >
                       {category.name}
                     </Link>
