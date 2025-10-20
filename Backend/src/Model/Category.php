@@ -3,27 +3,30 @@
 
 namespace Model;
 
-use Database\DatabaseConnection;
+use Database\DatabaseConnectionFactory;
 use Model\Product;
 
 class Category
 {
 
-    public function __construct() {}
+    private $pdo;
+
+    public function __construct()
+    {
+        $this->pdo = DatabaseConnectionFactory::createConnection();
+    }
+
 
     public function getAllCategories()
     {
-        $db = new DatabaseConnection();
-        $pdo = $db->getConnection();
 
         $query = "SELECT * FROM categories";
-        $stmt = $pdo->prepare($query);
+        $stmt = $this->pdo->prepare($query);
         $stmt->execute();
 
         $categoreis = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
-        // Pass the required argument to the Product constructor
-        $productObject = new Product(['id' => '1', 'name' => 'all', 'description' => '']);
+        $productObject = new Product();
 
         foreach ($categoreis as &$category) {
             // Nested resolution for products
@@ -34,11 +37,8 @@ class Category
     }
     public function getCategoryById(string $id)
     {
-        $db = new DatabaseConnection();
-        $pdo = $db->getConnection();
-
         $query = "SELECT * FROM categories WHERE id = :id";
-        $stmt = $pdo->prepare($query);
+        $stmt = $this->pdo->prepare($query);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
 

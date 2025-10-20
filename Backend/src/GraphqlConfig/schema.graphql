@@ -23,20 +23,6 @@ type Product {
   type: String!
 }
 
-type ElectronicProduct implements Product {
-  id: ID!
-  name: String!
-  description: String!
-  type: String!
-}
-
-type ClothingProduct implements Product {
-  id: ID!
-  name: String!
-  description: String!
-  type: String!
-}
-
 type Category {
   id: ID!
   name: String!

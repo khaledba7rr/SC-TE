@@ -5,7 +5,8 @@
             "Bahr\\Backend\\": "src/",
             "Database\\": "src/Database/",
             "Model\\": "src/Model",
-            "Controller\\": "src/Controller/"
+            "Controller\\": "src/Controller/",
+            "GraphqlConfig\\": "src/GraphqlConfig/"
         }
     },
     "authors": [

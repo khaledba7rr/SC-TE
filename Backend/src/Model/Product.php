@@ -2,56 +2,50 @@
 
 namespace Model;
 
-use Factory\ProductFactory;
-use Database\DatabaseConnection;
+use Database\DatabaseConnectionFactory;
 
-abstract class Product
+class Product
 {
-    protected string $id;
-    protected string $name;
-    protected string $description;
 
+    private $pdo;
 
-    public function __construct(array $data)
+    public function __construct()
     {
-        $this->id = $data['id'];
-        $this->name = $data['name'];
-        $this->description = $data['description'];
+        $this->pdo = DatabaseConnectionFactory::createConnection();
     }
-    abstract public function getType(): string;
-
 
     public function getAllProducts(): array
     {
-        $db = new DatabaseConnection();
-        $pdo = $db->getConnection();
-        $rows = $this->$db->query("SELECT * FROM products")->fetchAll();
-        return array_map(fn($row) => ProductFactory::create($row), $rows);
+        $query = "SELECT * FROM products";
+
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        $products = $this->getNestedFieldsForProducts($rows);
+
+        return $products;
     }
 
     public function getProductById(string $id)
     {
 
-        $db = new DatabaseConnection();
-        $pdo = $db->getConnection();
-
         $query = "SELECT * FROM products WHERE id = :id";
-        $stmt = $pdo->prepare($query);
+        $stmt = $this->pdo->prepare($query);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
 
         $productsData = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        $productsData = $this->getNestedFieldsForSingleProduct($productsData);
 
         return $productsData;
     }
 
     public function getProductsByCategoryId(string $id)
     {
-        $db = new DatabaseConnection();
-        $pdo = $db->getConnection();
-
         $categoryQuery = "SELECT * FROM categories WHERE id = :id";
-        $stmt = $pdo->prepare($categoryQuery);
+        $stmt = $this->pdo->prepare($categoryQuery);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
 
@@ -62,7 +56,7 @@ abstract class Product
         }
 
         $query = "SELECT * FROM products WHERE category_id = :id";
-        $stmt = $pdo->prepare($query);
+        $stmt = $this->pdo->prepare($query);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
 
@@ -92,5 +86,24 @@ abstract class Product
         }
 
         return $products;
+    }
+
+    private function getNestedFieldsForSingleProduct($product)
+    {
+        $attributeObject = new Attribute();
+        $categoryObject = new Category();
+        $imagesObject = new ProductImage();
+        $pricesObject = new ProductPrice();
+
+        // Nested resolution for attributes
+        $product['attributes'] = $attributeObject->getAttributesByProductId($product['id']);
+        // Nested resolution for categories
+        $product['category'] = $categoryObject->getCategoryById($product['category_id']);
+        // Nested resolution for images
+        $product['images'] = $imagesObject->getImagesByProductId($product['id']);
+        // Nested resolution for prices
+        $product['prices'] = $pricesObject->getPricesByProductId($product['id']);
+
+        return $product;
     }
 }

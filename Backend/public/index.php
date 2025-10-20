@@ -12,38 +12,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use Model\Product;
-use Model\Attribute;
-use Model\Category;
-use Model\Order;
-use Graphql\SchemaFactory;
+use GraphqlConfig\SchemaFactory;
 use Controller\GraphQL;
 
-$productObject = new Product(['id' => $args['id'], 'name' => $args['name'], 'description' => $args['description']]);
-$attributeObject = new Attribute();
-$categoryObject = new Category();
-$orderObject = new Order();
+$schema = SchemaFactory::build();
 
-$schema = SchemaFactory::create();
-
-$rootValue = [
-    'products' => fn() => $productObject->getAllProducts(),
-    'product' => fn($root, $args) => $productObject->getProductById($args['id']),
-    'attributes' => fn($root, $args) => $attributeObject->getAttributesByProductId($args['product_id']),
-    'categories' => fn() => $categoryObject->getAllCategories(),
-    'CreateOrder' => fn($root, $args) => $orderObject->createOrder($args['input']),
-    'orders' => fn($root, $args) => $orderObject->getAllOrders(),
-];
-
-// Set up FastRoute
 $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
-    // Make sure to use the correct HTTP method (POST)
     $r->addRoute('POST', '/graphql', [GraphQL::class, 'handle']);
 });
 
 // Dispatch the request
 $routeInfo = $dispatcher->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
-
 
 switch ($routeInfo[0]) {
     case FastRoute\Dispatcher::NOT_FOUND:
@@ -58,7 +37,7 @@ switch ($routeInfo[0]) {
         break;
     case FastRoute\Dispatcher::FOUND:
         // Instantiate controller and call the handle method
-        $controller = new GraphQL($schema, $rootValue);
-        echo $controller->handle();
+        $controller = new GraphQL($schema);
+        echo $controller::handle();
         break;
 }

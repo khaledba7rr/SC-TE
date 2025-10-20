@@ -3,19 +3,22 @@
 
 namespace Model;
 
-use Database\DatabaseConnection;
+use Database\DatabaseConnectionFactory;
 use DateTime;
 use Exception;
 
 class Order
 {
+    private $pdo;
+
+    public function __construct()
+    {
+        $this->pdo = DatabaseConnectionFactory::createConnection();
+    }
 
     public function createOrder(array $input): array
     {
-        $db = new DatabaseConnection();
-        $pdo = $db->getConnection();
-
-        $pdo->beginTransaction();
+        $this->pdo->beginTransaction();
 
         try {
 
@@ -23,21 +26,21 @@ class Order
                 throw new Exception('Customer name is required');
             }
 
-            $stmt = $pdo->prepare("INSERT INTO orders (customer_name, total_price) VALUES (?, ?)");
+            $stmt = $this->pdo->prepare("INSERT INTO orders (customer_name, total_price) VALUES (?, ?)");
             $stmt->execute([trim($input['customerName']), $input['totalPrice']]);
-            $orderId = $pdo->lastInsertId();
+            $orderId = $this->pdo->lastInsertId();
 
             $finalItems = [];
 
             foreach ($input['items'] as $item) {
-                $stmt = $pdo->prepare("INSERT INTO order_items (order_id, product_id, quantity, unit_price) VALUES (?, ?, ?, ?)");
+                $stmt = $this->pdo->prepare("INSERT INTO order_items (order_id, product_id, quantity, unit_price) VALUES (?, ?, ?, ?)");
                 $stmt->execute([$orderId, $item['productId'], $item['quantity'], $item['unitPrice']]);
-                $orderItemId = $pdo->lastInsertId();
+                $orderItemId = $this->pdo->lastInsertId();
 
                 $finalAttributes = [];
 
                 foreach ($item['attributes'] as $attr) {
-                    $stmt = $pdo->prepare("INSERT INTO order_item_attributes (order_item_id, attribute_id, value_id) VALUES (?, ?, ?)");
+                    $stmt = $this->pdo->prepare("INSERT INTO order_item_attributes (order_item_id, attribute_id, value_id) VALUES (?, ?, ?)");
                     $stmt->execute([$orderItemId, $attr['attributeId'], $attr['valueId']]);
 
                     $finalAttributes[] = [
@@ -57,7 +60,7 @@ class Order
                 ];
             }
 
-            $pdo->commit();
+            $this->pdo->commit();
 
             return [
                 'orderId' => $orderId,
@@ -68,28 +71,25 @@ class Order
                 'items' => $finalItems,
             ];
         } catch (\Exception $e) {
-            $pdo->rollBack();
+            $this->pdo->rollBack();
             throw $e;
         }
     }
 
     public function getAllOrders(): array
     {
-        $db = new DatabaseConnection();
-        $pdo = $db->getConnection();
-
         try {
             $orders = [];
-            $stmt = $pdo->query("SELECT * FROM orders ORDER BY created_at DESC");
+            $stmt = $this->pdo->query("SELECT * FROM orders ORDER BY created_at DESC");
             $orderResults = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
             foreach ($orderResults as $order) {
-                $itemStmt = $pdo->prepare("SELECT * FROM order_items WHERE order_id = ?");
+                $itemStmt = $this->pdo->prepare("SELECT * FROM order_items WHERE order_id = ?");
                 $itemStmt->execute([$order['id']]);
                 $items = [];
 
                 while ($item = $itemStmt->fetch(\PDO::FETCH_ASSOC)) {
-                    $attrStmt = $pdo->prepare("SELECT * FROM order_item_attributes WHERE order_item_id = ?");
+                    $attrStmt = $this->pdo->prepare("SELECT * FROM order_item_attributes WHERE order_item_id = ?");
                     $attrStmt->execute([$item['id']]);
                     $attributes = [];
 

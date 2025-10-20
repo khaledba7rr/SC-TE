@@ -2,21 +2,24 @@
 
 namespace Model;
 
-use Database\DatabaseConnection;
+use Database\DatabaseConnectionFactory;
 
 class ProductPrice
 {
 
-    public function __construct() {}
+    private $pdo;
+
+    public function __construct()
+    {
+        $this->pdo = DatabaseConnectionFactory::createConnection();
+    }
 
     public function getPricesByProductId(string $id)
     {
         try {
-            $db = new DatabaseConnection();
-            $pdo = $db->getConnection();
 
             $query = "SELECT * FROM product_prices WHERE product_id = :id";
-            $stmt = $pdo->prepare($query);
+            $stmt = $this->pdo->prepare($query);
             $stmt->bindParam(':id', $id);
             $stmt->execute();
 

@@ -2,25 +2,28 @@
 
 namespace Model;
 
-use Database\DatabaseConnection;
+use Database\DatabaseConnectionFactory;
 
 class AttributeValue
 {
-    public function __construct() {}
+    private $pdo;
+
+    public function __construct()
+    {
+        $this->pdo = DatabaseConnectionFactory::createConnection();
+    }
+
 
     public function getAttributeValuesByAttributeId(int $attributeId, string $productId)
     {
 
         try {
-            $db = new DatabaseConnection();
-            $pdo = $db->getConnection();
-
             $query = "SELECT av.id, av.value, av.display_value as displayValue 
                       FROM attribute_values av
                       INNER JOIN product_attributes pav ON av.id = pav.attribute_value_id
                       WHERE av.attribute_id = :id AND pav.product_id = :product_id";
 
-            $stmt = $pdo->prepare($query);
+            $stmt = $this->pdo->prepare($query);
             $stmt->bindParam(':id', $attributeId);
             $stmt->bindParam(':product_id', $productId);
             $stmt->execute();

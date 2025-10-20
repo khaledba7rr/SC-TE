@@ -2,19 +2,21 @@
 
 namespace Model;
 
-use Database\DatabaseConnection;
+use Database\DatabaseConnectionFactory;
 
 class Attribute
 {
-    public function __construct() {}
+    private $pdo;
+
+    public function __construct()
+    {
+        $this->pdo = DatabaseConnectionFactory::createConnection();
+    }
 
     public function getAttributesByProductId($id)
     {
 
         try {
-            $db = new DatabaseConnection();
-            $pdo = $db->getConnection();
-
             $query = "SELECT a.id, a.type, a.name, pa.product_id  , COUNT(*) AS attribute_count
               FROM attributes a 
               INNER JOIN product_attributes pa 
@@ -22,7 +24,7 @@ class Attribute
               WHERE pa.product_id = :id
               GROUP BY pa.attribute_id";
 
-            $stmt = $pdo->prepare($query);
+            $stmt = $this->pdo->prepare($query);
             $stmt->bindParam(':id', $id);
             $stmt->execute();
 
