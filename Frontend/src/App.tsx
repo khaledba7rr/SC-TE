@@ -9,14 +9,17 @@ import ToasterNotifier from './components/toast-notifier/toast-notifier.tsx';
 
 import { useSelector } from 'react-redux';
 import { RootState } from './store/index.ts';
+import Category from './types/category.tsx';
+import { defaultCategory, getCategoryObjectByName } from './constants/helpers.ts';
+
 
 const App = () => {
-  const [currentCategory, setCutrentCategory] = useState<string>('all');
+  const [currentCategory, setCutrentCategory] = useState<Category>(defaultCategory);
   const [showErrorNotifierMessage, setShowErrorNotifierMessage] =
     useState<boolean>(false);
   const [showSuccessNotifierMessage, setShowSuccessNotifierMessage] =
     useState<boolean>(false);
-
+  
   const orderProcessFailed = useSelector(
     (state: RootState) => state.cart.orderProcessFailed,
   );
@@ -24,30 +27,24 @@ const App = () => {
     (state: RootState) => state.cart.orderProcessSuccess,
   );
 
-  const handleChangeCategory = (selectedCategoryName: string) =>
+  const handleChangeCategory = (selectedCategory: Category) =>
   {
-    setCutrentCategory(selectedCategoryName);
-  };
-
-  const handleCategorySelectionAfterPageReload = () => {
-    const pathCategory = window.location.pathname.slice(1) || 'all';
-    setCutrentCategory(pathCategory);
+    setCutrentCategory(selectedCategory);
   };
 
   useEffect(() => {
     setShowErrorNotifierMessage(orderProcessFailed);
     setShowSuccessNotifierMessage(orderProcessSuccess);
-
-    handleCategorySelectionAfterPageReload();
   }, [
     orderProcessFailed,
     orderProcessSuccess,
+    setCutrentCategory
   ]);
 
   return (
     <>
       <Header
-        onCategoryChange={handleChangeCategory}
+        onCategoryChange={ (category : Category) => handleChangeCategory(category)}
         currentCategory={currentCategory}
       />
       <Routes>
@@ -60,7 +57,7 @@ const App = () => {
           }
         />
         <Route
-          path="/product/:id"
+          path="/product/:productId"
           element={<ProductDetailsPage />}
         />
 
@@ -70,6 +67,7 @@ const App = () => {
           element={
             <ProductsListingPage
               currentCategory={currentCategory}
+              setCurrentCategory={handleChangeCategory}
             />
           }
         />

@@ -83,11 +83,10 @@
     .thumbs-container {
       .sinlge-thumb-container {
         cursor: pointer;
+        img {
+          object-fit: contain;
+        }
       }
-      // .sinlge-thumb-container.selected {
-      //   border: #5ece7b 1px solid;
-      //   border-radius: 5px;
-      // }
     }
 
     .image {

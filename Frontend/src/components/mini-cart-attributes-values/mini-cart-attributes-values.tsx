@@ -1,5 +1,5 @@
 import Attribute from '../../types/attribute';
-import MiniCartAttributeValues from '../mini-cart-attribute-values/mini-cart-attribute-values';
+import MiniCartSingleAttributeValuesItem from '../mini-cart-single-attribute-values-item/mini-cart-single-attribute-values-item';
 
 interface MiniCartAttributesValuesProps {
   attribute: Attribute;
@@ -30,7 +30,7 @@ const MiniCartAttributesValues: React.FC<MiniCartAttributesValuesProps> = ({
         </div>
         <div className="attribute-values">
           {
-            <MiniCartAttributeValues
+            <MiniCartSingleAttributeValuesItem
               attributeType={attribute.type}
               attribute={{
                 ...attribute,

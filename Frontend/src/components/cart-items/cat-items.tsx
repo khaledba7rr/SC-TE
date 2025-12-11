@@ -47,7 +47,6 @@ const CartItems: React.FC<{ itemsLength: number }> = ({ itemsLength }) => {
       })),
     }));
 
-    console.log(orderItems);
 
     createOrder({
       variables: {
@@ -61,7 +60,6 @@ const CartItems: React.FC<{ itemsLength: number }> = ({ itemsLength }) => {
     })
       .then(response =>
       {
-        console.log("Order creation response:", response);
         if (response.data.CreateOrder) {
           dispatch(setOrderProccessSuccess(true));
           dispatch(clearCart());
@@ -70,7 +68,7 @@ const CartItems: React.FC<{ itemsLength: number }> = ({ itemsLength }) => {
         }
       })
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      .catch(_ => { console.log(_); dispatch(setOrderProccessFailed(true)); });
+      .catch(_ => dispatch(setOrderProccessFailed(true)) );
   };
 
   return (

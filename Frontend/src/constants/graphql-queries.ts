@@ -79,27 +79,40 @@ export const singleProductQuery = gql`
   }
 `;
 
-export const ordersQuery = gql`
-  query Orders {
-    orders {
-      orderId
-      customerName
-      totalPrice
-      status
-      created_at
-      items {
-        orderItemId
-        orderId
-        productId
-        quantity
-        unitPrice
-        currency
-        attributes {
-          attributeId
-          valueId
-        }
+export const productsByCategoryQuery = gql`
+  query ProductsByCategory($id : ID!) {
+      productsByCategoryId( id: $id) {
+          id
+          name
+          description
+          in_stock
+          category_id
+          brand
+          prices {
+              currency
+              id
+              price
+              product_id
+              symbol
+          }
+          attributes {
+              id
+              name
+              values {
+                  displayValue
+                  id
+                  value
+                  type
+              }
+              type
+          }
+          images {
+              id
+              label
+              product_id
+              url
+          }
       }
-    }
   }
 `;
 

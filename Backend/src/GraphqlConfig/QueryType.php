@@ -27,10 +27,18 @@ class QueryType extends ObjectType
                     ],
                     'resolve' => fn($root, $args) => $resolvers['productResolver']->getProductById($args['id']),
                 ],
+                'productsByCategoryId' => [
+                    'type' => Type::listOf($productType),
+                    'args' => [
+                        'id' => Type::nonNull(Type::id()),
+                    ],
+                    'resolve' => fn($root, $args) => $resolvers['productResolver']->getProductsByCategoryId($args['id']),
+                ],
                 'orders' => [
                     'type' => Type::listOf($orderType),
                     'resolve' => fn() => $resolvers['orderResolver']->getAllOrders(),
                 ],
+
             ],
         ]);
     }

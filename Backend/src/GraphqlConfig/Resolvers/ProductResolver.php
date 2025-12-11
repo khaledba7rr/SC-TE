@@ -22,4 +22,9 @@ class ProductResolver
     {
         return $this->product->getProductById($id);
     }
+
+    public function getProductsByCategoryId($id)
+    {
+        return $this->product->getProductsByCategoryId($id);
+    }
 }

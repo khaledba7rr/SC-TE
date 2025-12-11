@@ -3,7 +3,6 @@
 namespace Controller;
 
 use GraphQL\GraphQL as GraphQLBase;
-use GraphQL\Type\Schema;
 use GraphqlConfig\SchemaFactory;
 use RuntimeException;
 use Throwable;

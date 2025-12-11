@@ -2,35 +2,30 @@ import Product from '../../types/product.tsx';
 import './products-listing-page.scss';
 import ProductCard from '../../components/product-card/product-card.tsx';
 import Error from '../../components/error/error.tsx';
-import { productsQuery } from '../../constants/graphql-queries.ts';
+import { productsByCategoryQuery } from '../../constants/graphql-queries.ts';
 import Category from '../../types/category.tsx';
 
-import { useState, useEffect, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 
-import {
-  setAllProducts,
-} from '../../store/cart-slice.ts';
 import Loading from '../../components/loading/loading.tsx';
+import { useParams } from 'react-router-dom';
+import { getCategoryObjectByName } from '../../constants/helpers.ts';
 
 interface ProductsListingProps {
-  onFetchingCategories?: (categories: Category[]) => void;
-  currentCategory?: string;
+  currentCategory?: Category;
+  setCurrentCategory?: (category: Category) => void;
 }
 
-const dummmyProducts: Product[] = [];
-
 const ProductsListingPage: React.FC<ProductsListingProps> = ({
-  onFetchingCategories,
-  currentCategory
+  currentCategory , setCurrentCategory
 }) => {
   
-  const [products, setProducts] = useState<Product[]>(dummmyProducts);
+  const [products, setProducts] = useState<Product[]>([]);
   const [isError, setIsError] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { categoryName } = useParams<{ categoryName : string }>();
 
-  const dispatch = useDispatch();
 
   const handleSetError = (value: boolean) => {
     setIsError(value);
@@ -44,18 +39,11 @@ const ProductsListingPage: React.FC<ProductsListingProps> = ({
     setProducts(products);
   };
 
-  const handleSaveAllProductsInState = useCallback(
-    (products: Product[]) => {
-      dispatch(setAllProducts(products));
-    },
-    [dispatch],
-  );
+  const { data, error, loading } = useQuery(productsByCategoryQuery, {
+    variables: { id: currentCategory?.id || 1 },
+  });
 
-  
-
-  const { data, error, loading } = useQuery(productsQuery);
-
-    useEffect(() => {
+  useEffect(() => {
     if (error) {
       handleSetError(true);
       handleSetLoading(false);
@@ -66,35 +54,27 @@ const ProductsListingPage: React.FC<ProductsListingProps> = ({
       handleSetLoading(true);
       return;
     }
-
-    if (data) {
-      const selectedCategory = data.categories.find(
-        (category: Category) => category.name === currentCategory,
-      );
-
-      const allCategory = data.categories.find(
-        (category: Category) => category.name === 'all',
-      );
-
-      if (allCategory) {
-        handleSaveAllProductsInState(allCategory.products);
+      
+      const currentCategoryBasedOnPath = getCategoryObjectByName(categoryName || 'all');
+    
+      if (currentCategoryBasedOnPath.id !== currentCategory?.id)
+      {
+        setCurrentCategory?.(currentCategoryBasedOnPath);    
       }
+      
+      const allProducts: Product[] = data.productsByCategoryId || [];
 
-      if (selectedCategory) {
-        handleProductsChange(selectedCategory.products);
-      } else {
-        setProducts([]); // fallback if category not found
-      }
-      onFetchingCategories && onFetchingCategories(data.categories);
-      setIsLoading(false);
-    }
+      handleProductsChange(allProducts);
+      
+      handleSetLoading(false);
   }, [
     data,
     error,
     loading,
     currentCategory,
-    handleSaveAllProductsInState,
-  ]);
+    products,
+    handleProductsChange,
+    setCurrentCategory]);
 
   if (isError) return <Error />;
 
@@ -102,7 +82,7 @@ const ProductsListingPage: React.FC<ProductsListingProps> = ({
 
   return (
       <div id="main-container" className="products-listing">
-        <h1 className="category-title-plp mb-5">{currentCategory}</h1>
+        <h1 className="category-title-plp mb-5">{currentCategory?.name}</h1>
         <div className="products-container my-5 px-3 row row-cols-1 row-cols-lg-4 row-cols-md-2 row-cols-sm-1 g-5">
           {products.map(product => (
             <ProductCard key={product.id} product={product} />

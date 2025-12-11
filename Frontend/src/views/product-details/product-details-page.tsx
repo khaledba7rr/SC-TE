@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import ProductDetail from '../../components/product-detail/product-detail';
 import ErrorComponent from '../../components/error/error';
 import Product from '../../types/product';
+import { useParams } from "react-router-dom";
 import { useQuery } from '@apollo/client';
 
 import { singleProductQuery } from '../../constants/graphql-queries';
@@ -10,11 +11,12 @@ const ProductDetailsPage: React.FC = () => {
   const [product, setProduct] = useState<Product>({} as Product);
 
   // safely read product id from the current path (guard against SSR)
-  const pathProductId = typeof window !== 'undefined' ? window.location.pathname.split('/product/')[1] : '';
+  
+  const { productId }  = useParams<{ productId: string }>() || '';
 
   // call hook at top level
   const { data, loading, error } = useQuery(singleProductQuery, {
-    variables: { id: pathProductId }
+    variables: { id: productId }
   });
 
   // update local state when query result arrives

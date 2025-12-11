@@ -12,8 +12,8 @@ import { useQuery } from '@apollo/client';
 import { categoriesQuery } from '../../constants/graphql-queries';
 
 type HeaderProps = {
-  onCategoryChange: (value: string) => void;
-  currentCategory: string;
+  onCategoryChange: (value: Category) => void;
+  currentCategory: Category;
 };
 
 const Header: React.FC<HeaderProps> = ({
@@ -52,15 +52,14 @@ const Header: React.FC<HeaderProps> = ({
                   <li key={category.id} className="nav-item fs-4">
                     <Link
                       data-testid={
-                        category.name === currentCategory
+                        category.name === currentCategory.name
                           ? 'active-category-link'
                           : 'category-link'
                       }
                       to={`/${category.name}`}
-                      className={`nav-link pb-4 ${category.name === currentCategory && 'active'}`}
+                      className={`nav-link pb-4 ${category.name === currentCategory.name && 'active'}`}
                       aria-current="page"
-                      onClick={() => onCategoryChange(category.name)}
-                      onLoad={() => onCategoryChange(window.location.pathname.slice(1) || 'all')}
+                      onClick={() => onCategoryChange(category)}
                     >
                       {category.name}
                     </Link>

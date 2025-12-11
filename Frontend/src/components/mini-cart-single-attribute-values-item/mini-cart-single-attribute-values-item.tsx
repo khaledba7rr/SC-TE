@@ -6,7 +6,7 @@ interface AttributeValue {
   value: string;
 }
 
-interface MiniCartAttributeValuesProps {
+interface MiniCartSingleAttributeValuesItemProps {
   attributeType: string;
   attribute: {
     values: AttributeValue[];
@@ -15,7 +15,7 @@ interface MiniCartAttributeValuesProps {
   getKebakAttributeName: () => string;
 }
 
-const MiniCartAttributeValues: React.FC<MiniCartAttributeValuesProps> = ({
+const MiniCartSingleAttributeValuesItem: React.FC<MiniCartSingleAttributeValuesItemProps> = ({
   attributeType,
   attribute,
   selectedAttributeValueId,
@@ -70,4 +70,4 @@ const MiniCartAttributeValues: React.FC<MiniCartAttributeValuesProps> = ({
   return null;
 };
 
-export default MiniCartAttributeValues;
+export default MiniCartSingleAttributeValuesItem;
