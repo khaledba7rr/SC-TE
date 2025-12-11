@@ -3,14 +3,14 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { ApolloProvider } from '@apollo/client';
 import './index.css';
-import App from './App.tsx';
+import App from './App';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap';
 //icons
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import client from './data/apollo-client.ts';
+import client from './data/apollo-client';
 import { Provider } from 'react-redux';
-import store from './store/index.ts';
+import store from './store/index';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -21,5 +21,5 @@ createRoot(document.getElementById('root')!).render(
         </Provider>
       </BrowserRouter>
     </ApolloProvider>
-  </StrictMode>,
+  </StrictMode>
 );
