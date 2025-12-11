@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
-import cartReducer from './cart-slice.ts';
+import cartReducer from './cart-slice';
 
-import CartItem from '../types/cart-items.ts';
+import CartItem from '../types/cart-items';
 
 // Load from localStorage
 const loadCartFromStorage = () => {

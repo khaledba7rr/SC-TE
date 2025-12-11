@@ -1,16 +1,16 @@
-import Product from '../../types/product.tsx';
+import Product from '../../types/product';
 import './products-listing-page.scss';
-import ProductCard from '../../components/product-card/product-card.tsx';
-import Error from '../../components/error/error.tsx';
-import { productsByCategoryQuery } from '../../constants/graphql-queries.ts';
-import Category from '../../types/category.tsx';
+import ProductCard from '../../components/product-card/product-card';
+import Error from '../../components/error/error';
+import { productsByCategoryQuery } from '../../constants/graphql-queries';
+import Category from '../../types/category';
 
 import { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 
-import Loading from '../../components/loading/loading.tsx';
+import Loading from '../../components/loading/loading';
 import { useParams } from 'react-router-dom';
-import { getCategoryObjectByName } from '../../constants/helpers.ts';
+import { getCategoryObjectByName } from '../../constants/helpers';
 
 interface ProductsListingProps {
   currentCategory?: Category;
@@ -18,14 +18,13 @@ interface ProductsListingProps {
 }
 
 const ProductsListingPage: React.FC<ProductsListingProps> = ({
-  currentCategory , setCurrentCategory
+  currentCategory,
+  setCurrentCategory,
 }) => {
-  
   const [products, setProducts] = useState<Product[]>([]);
   const [isError, setIsError] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const { categoryName } = useParams<{ categoryName : string }>();
-
+  const { categoryName } = useParams<{ categoryName: string }>();
 
   const handleSetError = (value: boolean) => {
     setIsError(value);
@@ -35,7 +34,7 @@ const ProductsListingPage: React.FC<ProductsListingProps> = ({
     setIsLoading(value);
   };
 
-    const handleProductsChange = (products: Product[]) => {
+  const handleProductsChange = (products: Product[]) => {
     setProducts(products);
   };
 
@@ -54,41 +53,43 @@ const ProductsListingPage: React.FC<ProductsListingProps> = ({
       handleSetLoading(true);
       return;
     }
-      
-      const currentCategoryBasedOnPath = getCategoryObjectByName(categoryName || 'all');
-    
-      if (currentCategoryBasedOnPath.id !== currentCategory?.id)
-      {
-        setCurrentCategory?.(currentCategoryBasedOnPath);    
-      }
-      
-      const allProducts: Product[] = data.productsByCategoryId || [];
 
-      handleProductsChange(allProducts);
-      
-      handleSetLoading(false);
+    const currentCategoryBasedOnPath = getCategoryObjectByName(
+      categoryName || 'all'
+    );
+
+    if (currentCategoryBasedOnPath.id !== currentCategory?.id) {
+      setCurrentCategory?.(currentCategoryBasedOnPath);
+    }
+
+    const allProducts: Product[] = data.productsByCategoryId || [];
+
+    handleProductsChange(allProducts);
+
+    handleSetLoading(false);
   }, [
     data,
     error,
     loading,
     currentCategory,
     products,
-    handleProductsChange,
-    setCurrentCategory]);
+    setCurrentCategory,
+    categoryName,
+  ]);
 
   if (isError) return <Error />;
 
   if (isLoading) return <Loading />;
 
   return (
-      <div id="main-container" className="products-listing">
-        <h1 className="category-title-plp mb-5">{currentCategory?.name}</h1>
-        <div className="products-container my-5 px-3 row row-cols-1 row-cols-lg-4 row-cols-md-2 row-cols-sm-1 g-5">
-          {products.map(product => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
+    <div id="main-container" className="products-listing">
+      <h1 className="category-title-plp mb-5">{currentCategory?.name}</h1>
+      <div className="products-container my-5 px-3 row row-cols-1 row-cols-lg-4 row-cols-md-2 row-cols-sm-1 g-5">
+        {products.map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
       </div>
+    </div>
   );
 };
 

@@ -5,10 +5,10 @@ import { Link } from 'react-router-dom';
 
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { addItem } from '../../store/cart-slice.ts';
+import { addItem } from '../../store/cart-slice';
 import ProductDataSelection from '../../types/product-selection';
 
-import Loading from '../loading/loading.tsx';
+import Loading from '../loading/loading';
 
 interface ProductCardProps {
   product: Product;
@@ -25,7 +25,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     const attributesWithFirstAttributeValue: {
       attribute_id: number;
       value_id: number;
-    }[] = product.attributes.map(attr => ({
+    }[] = product.attributes.map((attr) => ({
       attribute_id: attr.id,
       value_id: attr.values[0].id,
     }));
@@ -85,7 +85,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             {product.in_stock && (
               <div
                 className="add-to-cart-container position-absolute"
-                onClick={e => {
+                onClick={(e) => {
                   e.preventDefault();
                   handleQuickAddToCart();
                 }}

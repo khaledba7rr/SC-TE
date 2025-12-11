@@ -47,78 +47,78 @@ export const categoriesQuery = gql`
 export const singleProductQuery = gql`
   query CurrentProduct($id: String!) {
     product(id: $id) {
+      id
+      name
+      description
+      in_stock
+      category_id
+      brand
+      prices {
+        currency
+        id
+        price
+        product_id
+        symbol
+      }
+      images {
+        id
+        product_id
+        url
+      }
+      attributes {
         id
         name
-        description
-        in_stock
-        category_id
-        brand
-        prices {
-            currency
-            id
-            price
-            product_id
-            symbol
+        type
+        values {
+          displayValue
+          id
+          value
         }
-        images {
-            id
-            product_id
-            url
-        }
-        attributes {
-            id
-            name
-            type
-            values {
-                displayValue
-                id
-                value
-            }
-        }
+      }
     }
   }
 `;
 
 export const productsByCategoryQuery = gql`
-  query ProductsByCategory($id : ID!) {
-      productsByCategoryId( id: $id) {
-          id
-          name
-          description
-          in_stock
-          category_id
-          brand
-          prices {
-              currency
-              id
-              price
-              product_id
-              symbol
-          }
-          attributes {
-              id
-              name
-              values {
-                  displayValue
-                  id
-                  value
-                  type
-              }
-              type
-          }
-          images {
-              id
-              label
-              product_id
-              url
-          }
+  query ProductsByCategory($id: ID!) {
+    productsByCategoryId(id: $id) {
+      id
+      name
+      description
+      in_stock
+      category_id
+      brand
+      prices {
+        currency
+        id
+        price
+        product_id
+        symbol
       }
+      attributes {
+        id
+        name
+        values {
+          displayValue
+          id
+          value
+          type
+        }
+        type
+      }
+      images {
+        id
+        label
+        product_id
+        url
+      }
+    }
   }
 `;
 
 export const createOrderMutation = gql`
   mutation CreateOrder($input: OrderInput!) {
-    CreateOrder(input: $input){
+    CreateOrder(input: $input) {
       orderId
       totalPrice
       status

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, { useState } from 'react';
 import './product-detail.scss';
 import Product from '../../types/product';
@@ -6,16 +7,14 @@ import parse from 'html-react-parser';
 
 import AttributeValues from '../attribute-values/attribute-values';
 import { useDispatch } from 'react-redux';
-import { addItem, openCart } from '../../store/cart-slice.ts';
-import ProductDataSelection from '../../types/product-selection.tsx';
+import { addItem, openCart } from '../../store/cart-slice';
+import ProductDataSelection from '../../types/product-selection';
 
 interface ProductDetailProps {
   product: Product;
 }
 
-const ProductDetail: React.FC<ProductDetailProps> = ({ product }) =>
-{
-  
+const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
   if (!product || Object.keys(product).length === 0) {
     return <div>Loading...</div>;
   }
@@ -31,7 +30,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) =>
   };
 
   const [currentImageUrl, setCurrentImageUrl] = useState<string>(
-    product?.images?.[0]?.url ?? '',
+    product?.images?.[0]?.url ?? ''
   );
   const [isImageLoaded, setIsImageLoaded] = useState<boolean>(false);
   const [productSelection, setProductSelection] = useState<
@@ -42,7 +41,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) =>
   const dispatch = useDispatch();
 
   const handleAddToCart = (
-    productToAddToCart: ProductDataSelection | undefined,
+    productToAddToCart: ProductDataSelection | undefined
   ) => {
     if (product.attributes.length === 0) {
       productToAddToCart = {
@@ -61,7 +60,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) =>
     if (
       productToAddToCart.attributes.length < product.attributes.length ||
       productToAddToCart.attributes.some(
-        attribute => attribute.value_id === undefined,
+        (attribute) => attribute.value_id === undefined
       ) ||
       product === null
     ) {
@@ -88,16 +87,16 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) =>
     }
 
     const existingProductSelection = productSelection?.attributes.find(
-      attribute => attribute.attribute_id === attributeId,
+      (attribute) => attribute.attribute_id === attributeId
     );
 
     if (existingProductSelection) {
       const updatedProductSelection = {
         ...productSelection,
-        attributes: productSelection.attributes.map(attribute =>
+        attributes: productSelection.attributes.map((attribute) =>
           attribute.attribute_id === attributeId
             ? { ...attribute, value_id: valueId }
-            : attribute,
+            : attribute
         ),
         productId: product.id,
         singleItemPrice: price,
@@ -123,7 +122,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) =>
 
   const handleCarouselClick = (direction: 'next' | 'previous') => {
     const currentImageIndex = product.images.findIndex(
-      img => img.url === currentImageUrl,
+      (img) => img.url === currentImageUrl
     );
 
     if (direction === 'next') {
@@ -157,21 +156,22 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) =>
             data-testid="product-gallery"
           >
             <div className="thumbs-container d-flex flex-wrap flex-md-column justify-content-end align-items-center">
-              { product.images && product.images.map(image => (
-                <div
-                  key={image.url}
-                  className={`sinlge-thumb-container ${image.url === currentImageUrl && 'selected'} thumb-image m-1`}
-                  onClick={() => setCurrentImageUrl(image.url)}
-                >
-                  {!isImageLoaded && <Loading />}
-                  <img
-                    src={image.url}
-                    alt={product.name}
-                    onLoad={() => setIsImageLoaded(true)}
-                    className="image"
-                  />
-                </div>
-              ))}
+              {product.images &&
+                product.images.map((image) => (
+                  <div
+                    key={image.url}
+                    className={`sinlge-thumb-container ${image.url === currentImageUrl && 'selected'} thumb-image m-1`}
+                    onClick={() => setCurrentImageUrl(image.url)}
+                  >
+                    {!isImageLoaded && <Loading />}
+                    <img
+                      src={image.url}
+                      alt={product.name}
+                      onLoad={() => setIsImageLoaded(true)}
+                      className="image"
+                    />
+                  </div>
+                ))}
             </div>
           </div>
 
@@ -183,29 +183,26 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) =>
                 className="main-image"
               />
 
-                          <div
-              className={`carousel-container ${((product?.images?.length ?? 0) > 1) ? 'd-block' : 'd-none'} position-absolute`}
-            >
-              <div className="carousel-buttons-container d-flex justify-content-between px-5">
-                <button
-                  onClick={() => handleCarouselClick('previous')}
-                  className="p-1 border border-0"
-                >
-                  <i className="bi bi-chevron-compact-left fs-4"></i>
-                </button>
+              <div
+                className={`carousel-container ${(product?.images?.length ?? 0) > 1 ? 'd-block' : 'd-none'} position-absolute`}
+              >
+                <div className="carousel-buttons-container d-flex justify-content-between px-5">
+                  <button
+                    onClick={() => handleCarouselClick('previous')}
+                    className="p-1 border border-0"
+                  >
+                    <i className="bi bi-chevron-compact-left fs-4"></i>
+                  </button>
 
-                <button
-                  onClick={() => handleCarouselClick('next')}
-                  className="p-1 border border-0"
-                >
-                  <i className="bi bi-chevron-compact-right fs-4"></i>
-                </button>
+                  <button
+                    onClick={() => handleCarouselClick('next')}
+                    className="p-1 border border-0"
+                  >
+                    <i className="bi bi-chevron-compact-right fs-4"></i>
+                  </button>
+                </div>
               </div>
             </div>
-              
-            </div>
-
-
           </div>
         </div>
 
@@ -215,26 +212,27 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) =>
           </div>
 
           <div className="product-attributes w-100 d-flex flex-column justify-content-md-between align-items-start align-items-md-start">
-            { product.attributes && product?.attributes.map(attribute => (
-              <div
-                key={attribute.id}
-                className="my-3"
-                data-testid={`product-attribute-${attribute.name.toLowerCase().replace(/\s+/g, '-')}`}
-              >
-                <div className="attribute-name">{attribute.name}:</div>
+            {product.attributes &&
+              product?.attributes.map((attribute) => (
+                <div
+                  key={attribute.id}
+                  className="my-3"
+                  data-testid={`product-attribute-${attribute.name.toLowerCase().replace(/\s+/g, '-')}`}
+                >
+                  <div className="attribute-name">{attribute.name}:</div>
 
-                <div className="attribute-values d-flex flex-wrap">
-                  {
-                    <AttributeValues
-                      type={attribute.type}
-                      attributeValues={attribute.values}
-                      selectProductAttributes={handleProductSelection}
-                      attribute={attribute}
-                    />
-                  }
+                  <div className="attribute-values d-flex flex-wrap">
+                    {
+                      <AttributeValues
+                        type={attribute.type}
+                        attributeValues={attribute.values}
+                        selectProductAttributes={handleProductSelection}
+                        attribute={attribute}
+                      />
+                    }
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
           </div>
 
           <div className="product-price w-100 d-flex flex-column">

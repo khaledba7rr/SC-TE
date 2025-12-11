@@ -23,7 +23,8 @@ const Header: React.FC<HeaderProps> = ({
   const isCartOpen = useSelector((state: RootState) => state.cart.isCartOpen);
   const dispatch = useDispatch();
 
-  const categories: Category[] = useQuery(categoriesQuery).data?.categories || [];
+  const categories: Category[] =
+    useQuery(categoriesQuery).data?.categories || [];
 
   return (
     <header className="header">
@@ -48,7 +49,7 @@ const Header: React.FC<HeaderProps> = ({
             >
               {/* CATEGORIES  */}
               <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                {categories.map(category => (
+                {categories.map((category) => (
                   <li key={category.id} className="nav-item fs-4">
                     <Link
                       data-testid={

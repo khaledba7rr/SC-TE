@@ -20,33 +20,34 @@ const CartItems: React.FC<{ itemsLength: number }> = ({ itemsLength }) => {
   const dispatch = useDispatch();
 
   const cartItems = useSelector((state: RootState) => state.cart.items);
-  const allProducts = useSelector((state: RootState) => state.cart.allProducts ?? []);
+  const allProducts = useSelector(
+    (state: RootState) => state.cart.allProducts ?? []
+  );
   const itemsCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
   const itemsTotal = cartItems.reduce(
     (acc, item) =>
       acc +
       item.quantity *
-        (allProducts?.find(product => product.id === item.productId)?.prices[0]
-          .price ?? 0),
-    0,
+        (allProducts?.find((product) => product.id === item.productId)
+          ?.prices[0].price ?? 0),
+    0
   );
 
   const [createOrder, { loading }] = useMutation(createOrderMutation);
 
   const handleCreateOrder = (cartItems: CartItem[]) => {
-    const orderItems = cartItems.map(item => ({
+    const orderItems = cartItems.map((item) => ({
       productId: item.productId,
       quantity: item.quantity,
-      unitPrice: allProducts.find(product => product.id === item.productId)
+      unitPrice: allProducts.find((product) => product.id === item.productId)
         ?.prices[0].price,
-      currency: allProducts.find(product => product.id === item.productId)
+      currency: allProducts.find((product) => product.id === item.productId)
         ?.prices[0].currency,
-      attributes: item.attributes.map(attr => ({
+      attributes: item.attributes.map((attr) => ({
         attributeId: Number(attr.attribute_id),
         valueId: Number(attr.value_id),
       })),
     }));
-
 
     createOrder({
       variables: {
@@ -58,8 +59,7 @@ const CartItems: React.FC<{ itemsLength: number }> = ({ itemsLength }) => {
         },
       },
     })
-      .then(response =>
-      {
+      .then((response) => {
         if (response.data.CreateOrder) {
           dispatch(setOrderProccessSuccess(true));
           dispatch(clearCart());
@@ -67,13 +67,14 @@ const CartItems: React.FC<{ itemsLength: number }> = ({ itemsLength }) => {
           dispatch(setOrderProccessFailed(true));
         }
       })
+      .finally(() => {})
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      .catch(_ => dispatch(setOrderProccessFailed(true)) );
+      .catch((_) => dispatch(setOrderProccessFailed(true)));
   };
 
   return (
     <>
-      {loading && <Loading />}  
+      {loading && <Loading />}
       <div className="d-flex bag-title">
         <p>
           {' '}
@@ -89,7 +90,7 @@ const CartItems: React.FC<{ itemsLength: number }> = ({ itemsLength }) => {
         <div className="cart-item py-1">
           {cartItems.map((item, index) => {
             const product = allProducts.find(
-              product => product.id === item.productId,
+              (product) => product.id === item.productId
             );
 
             return (
@@ -107,13 +108,13 @@ const CartItems: React.FC<{ itemsLength: number }> = ({ itemsLength }) => {
                         {product?.prices[0].price}{' '}
                       </div>
                       <div className="product-attributes">
-                        {product?.attributes.map(attribute => (
+                        {product?.attributes.map((attribute) => (
                           <MiniCartAttributesValues
                             key={attribute.id}
                             attribute={attribute}
                             selectedAttributeValueId={
                               item.attributes.find(
-                                attr => attr.attribute_id === attribute.id,
+                                (attr) => attr.attribute_id === attribute.id
                               )?.value_id
                             }
                           />

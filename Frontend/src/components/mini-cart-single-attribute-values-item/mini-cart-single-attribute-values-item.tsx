@@ -15,7 +15,9 @@ interface MiniCartSingleAttributeValuesItemProps {
   getKebakAttributeName: () => string;
 }
 
-const MiniCartSingleAttributeValuesItem: React.FC<MiniCartSingleAttributeValuesItemProps> = ({
+const MiniCartSingleAttributeValuesItem: React.FC<
+  MiniCartSingleAttributeValuesItemProps
+> = ({
   attributeType,
   attribute,
   selectedAttributeValueId,

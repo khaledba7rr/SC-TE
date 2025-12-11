@@ -33,7 +33,7 @@ const AttributeValues: React.FC<AttributeValuesProps> = ({
       setAttributeSelection(newAttributeSelection);
     } else {
       const existingAttribute = attributeSelection.find(
-        attr => attr.attribute_id === attributeId,
+        (attr) => attr.attribute_id === attributeId
       );
       if (existingAttribute) {
         existingAttribute.value_id = valueId;
@@ -54,7 +54,7 @@ const AttributeValues: React.FC<AttributeValuesProps> = ({
     }
 
     const selectedAttribute = attributeSelection.find(
-      attr => attr.attribute_id === attributeId,
+      (attr) => attr.attribute_id === attributeId
     );
     return selectedAttribute ? selectedAttribute.value_id : null;
   };
