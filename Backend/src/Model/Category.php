@@ -1,21 +1,20 @@
 <?php
 
 
-namespace Model;
+namespace Backend\Model;
 
-use Database\DatabaseConnectionFactory;
-use Model\Product;
 
-class Category
+use Backend\Model\Abstracts\AbstractCategory;
+use Backend\Database\DatabaseConnectionFactory;
+use Backend\Model\Product;
+
+class Category extends AbstractCategory
 {
-
-    private $pdo;
 
     public function __construct()
     {
         $this->pdo = DatabaseConnectionFactory::createConnection();
     }
-
 
     public function getAllCategories()
     {

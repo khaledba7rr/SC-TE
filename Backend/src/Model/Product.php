@@ -1,13 +1,14 @@
 <?php
 
-namespace Model;
+namespace Backend\Model;
 
-use Database\DatabaseConnectionFactory;
 
-class Product
+use Backend\Database\DatabaseConnectionFactory;
+use Backend\Model\Abstracts\AbstractProduct;
+
+
+class Product extends AbstractProduct
 {
-
-    private $pdo;
 
     public function __construct()
     {
@@ -27,7 +28,7 @@ class Product
         return $products;
     }
 
-    public function getProductById(string $id)
+    public function getProductById(string $id): mixed
     {
 
         $query = "SELECT * FROM products WHERE id = :id";
@@ -48,7 +49,6 @@ class Product
         $stmt = $this->pdo->prepare($categoryQuery);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
-
         $category = $stmt->fetch(\PDO::FETCH_ASSOC);
 
         if ($category['name'] === 'all') {
@@ -58,17 +58,18 @@ class Product
         $query = "SELECT * FROM products WHERE category_id = :id";
         $stmt = $this->pdo->prepare($query);
         $stmt->bindParam(':id', $id);
+
         $stmt->execute();
 
         $products = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-
         $products = $this->getNestedFieldsForProducts($products);
 
         return $products;
     }
 
-    private function getNestedFieldsForProducts($products)
+    protected function getNestedFieldsForProducts(array $products): array
     {
+
         $attributeObject = new Attribute();
         $categoryObject = new Category();
         $imagesObject = new ProductImage();
@@ -85,10 +86,11 @@ class Product
             $product['prices'] = $pricesObject->getPricesByProductId($product['id']);
         }
 
+
         return $products;
     }
 
-    private function getNestedFieldsForSingleProduct($product)
+    protected function getNestedFieldsForSingleProduct($product): array
     {
         $attributeObject = new Attribute();
         $categoryObject = new Category();

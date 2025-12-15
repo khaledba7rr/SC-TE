@@ -1,18 +1,11 @@
 <?php
 
-namespace Model;
+namespace Backend\Model;
 
-use Database\DatabaseConnectionFactory;
+use Backend\Model\Abstracts\AbstractProductPrice;
 
-class ProductPrice
+class ProductPrice extends AbstractProductPrice
 {
-
-    private $pdo;
-
-    public function __construct()
-    {
-        $this->pdo = DatabaseConnectionFactory::createConnection();
-    }
 
     public function getPricesByProductId(string $id)
     {

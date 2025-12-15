@@ -1,9 +1,9 @@
 <?php
 
-namespace Controller;
+namespace Backend\Controller;
 
 use GraphQL\GraphQL as GraphQLBase;
-use GraphqlConfig\SchemaFactory;
+use Backend\GraphqlConfig\SchemaFactory;
 use RuntimeException;
 use Throwable;
 

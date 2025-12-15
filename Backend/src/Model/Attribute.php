@@ -1,12 +1,12 @@
 <?php
 
-namespace Model;
+namespace Backend\Model;
 
-use Database\DatabaseConnectionFactory;
+use Backend\Database\DatabaseConnectionFactory;
+use Backend\Model\Abstracts\AbstractAttribute;
 
-class Attribute
+class Attribute extends AbstractAttribute
 {
-    private $pdo;
 
     public function __construct()
     {

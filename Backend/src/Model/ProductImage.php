@@ -1,20 +1,20 @@
 <?php
 
-namespace Model;
+namespace Backend\Model;
 
-use Database\DatabaseConnectionFactory;
 
-class ProductImage
+use Backend\Database\DatabaseConnectionFactory;
+use Backend\Model\Abstracts\AbstractProductImage;
+
+class ProductImage extends AbstractProductImage
 {
-
-    private $pdo;
 
     public function __construct()
     {
         $this->pdo = DatabaseConnectionFactory::createConnection();
     }
 
-    public function getImagesByProductId(string $id)
+    public function getImagesByProductId(string $id): array
     {
         try {
             $query = "SELECT image_url as url, id, product_id FROM product_images WHERE product_id = :id";

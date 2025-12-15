@@ -12,8 +12,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use GraphqlConfig\SchemaFactory;
-use Controller\GraphQL;
+use Backend\GraphqlConfig\SchemaFactory;
+use Backend\Controller\GraphQL;
 
 $schema = SchemaFactory::build();
 

@@ -1,24 +1,24 @@
 <?php
 
-namespace GraphqlConfig;
+namespace Backend\GraphqlConfig;
 
 use GraphQL\Type\Schema;
 use GraphQL\Type\SchemaConfig;
-use GraphqlConfig\Types\ProductType;
-use GraphqlConfig\Types\CategoryType;
-use GraphqlConfig\Types\ImageType;
-use GraphqlConfig\Types\ProductPriceType;
-use GraphqlConfig\Types\AttributeType;
-use GraphqlConfig\Types\AttributeValueType;
-use GraphqlConfig\Types\OrderType;
-use GraphqlConfig\Types\OrderItemType;
-use GraphqlConfig\Types\OrderItemAttributeType;
-use GraphqlConfig\Types\OrderItemInputType;
-use GraphqlConfig\Types\OrderItemAttributeInputType;
-use GraphqlConfig\Types\OrderInputType;
-use GraphqlConfig\MutationType;
-use GraphqlConfig\QueryType;
-use GraphqlConfig\Resolvers\ResolverFactory;
+use Backend\GraphqlConfig\Types\ProductType;
+use Backend\GraphqlConfig\Types\CategoryType;
+use Backend\GraphqlConfig\Types\ImageType;
+use Backend\GraphqlConfig\Types\ProductPriceType;
+use Backend\GraphqlConfig\Types\AttributeType;
+use Backend\GraphqlConfig\Types\AttributeValueType;
+use Backend\GraphqlConfig\Types\OrderType;
+use Backend\GraphqlConfig\Types\OrderItemType;
+use Backend\GraphqlConfig\Types\OrderItemAttributeType;
+use Backend\GraphqlConfig\Types\OrderItemInputType;
+use Backend\GraphqlConfig\Types\OrderItemAttributeInputType;
+use Backend\GraphqlConfig\Types\OrderInputType;
+use Backend\GraphqlConfig\MutationType;
+use Backend\GraphqlConfig\QueryType;
+use Backend\GraphqlConfig\Resolvers\ResolverFactory;
 
 class SchemaFactory
 {

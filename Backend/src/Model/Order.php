@@ -1,15 +1,15 @@
 <?php
 
 
-namespace Model;
+namespace Backend\Model;
 
-use Database\DatabaseConnectionFactory;
+use Backend\Database\DatabaseConnectionFactory;
 use DateTime;
 use Exception;
+use Backend\Model\Abstracts\AbstractOrder;
 
-class Order
+class Order extends AbstractOrder
 {
-    private $pdo;
 
     public function __construct()
     {

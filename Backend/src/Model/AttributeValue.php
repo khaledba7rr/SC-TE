@@ -1,18 +1,17 @@
 <?php
 
-namespace Model;
+namespace Backend\Model;
 
-use Database\DatabaseConnectionFactory;
+use Backend\Database\DatabaseConnectionFactory;
 
-class AttributeValue
+use Backend\Model\Abstracts\AbstractAttributeValue;
+
+class AttributeValue extends AbstractAttributeValue
 {
-    private $pdo;
-
     public function __construct()
     {
         $this->pdo = DatabaseConnectionFactory::createConnection();
     }
-
 
     public function getAttributeValuesByAttributeId(int $attributeId, string $productId)
     {

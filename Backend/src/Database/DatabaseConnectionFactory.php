@@ -1,8 +1,8 @@
 <?php
 
-namespace Database;
+namespace Backend\Database;
 
-use Database\DatabaseConnection;
+use Backend\Database\DatabaseConnection;
 use PDO;
 
 class DatabaseConnectionFactory

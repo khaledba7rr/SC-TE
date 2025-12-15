@@ -1,8 +1,8 @@
 <?php
 
-namespace GraphqlConfig\Resolvers;
+namespace Backend\GraphqlConfig\Resolvers;
 
-use Model\Product;
+use Backend\Model\Product;
 
 class ProductResolver
 {

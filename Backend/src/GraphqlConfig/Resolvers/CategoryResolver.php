@@ -1,8 +1,8 @@
 <?php
 
-namespace GraphqlConfig\Resolvers;
+namespace Backend\GraphqlConfig\Resolvers;
 
-use Model\Category;
+use Backend\Model\Category;
 
 class CategoryResolver
 {

@@ -2,11 +2,7 @@
     "name": "bahr/backend",
     "autoload": {
         "psr-4": {
-            "Bahr\\Backend\\": "src/",
-            "Database\\": "src/Database/",
-            "Model\\": "src/Model",
-            "Controller\\": "src/Controller/",
-            "GraphqlConfig\\": "src/GraphqlConfig/"
+            "Backend\\": "src/"
         }
     },
     "authors": [

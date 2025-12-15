@@ -1,8 +1,8 @@
 <?php
 
-namespace GraphqlConfig\Resolvers;
+namespace Backend\GraphqlConfig\Resolvers;
 
-use Model\Order;
+use Backend\Model\Order;
 
 class OrderResolver
 {

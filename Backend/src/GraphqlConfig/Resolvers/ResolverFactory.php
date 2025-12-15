@@ -1,6 +1,6 @@
 <?php
 
-namespace GraphqlConfig\Resolvers;
+namespace Backend\GraphqlConfig\Resolvers;
 
 class ResolverFactory
 {
