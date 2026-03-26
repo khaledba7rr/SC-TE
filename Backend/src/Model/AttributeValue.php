@@ -2,38 +2,18 @@
 
 namespace Backend\Model;
 
-use Backend\Database\DatabaseConnectionFactory;
-
 use Backend\Model\Abstracts\AbstractAttributeValue;
+use PDO;
 
 class AttributeValue extends AbstractAttributeValue
 {
-    public function __construct()
+    public function __construct(PDO $pdo)
     {
-        $this->pdo = DatabaseConnectionFactory::createConnection();
+        parent::__construct($pdo);
     }
 
-    public function getAttributeValuesByAttributeId(int $attributeId, string $productId)
+    public function getAttributeValuesByAttributeId(int $attributeId, string $productId) : array
     {
-
-        try {
-            $query = "SELECT av.id, av.value, av.display_value as displayValue 
-                      FROM attribute_values av
-                      INNER JOIN product_attributes pav ON av.id = pav.attribute_value_id
-                      WHERE av.attribute_id = :id AND pav.product_id = :product_id";
-
-            $stmt = $this->pdo->prepare($query);
-            $stmt->bindParam(':id', $attributeId);
-            $stmt->bindParam(':product_id', $productId);
-            $stmt->execute();
-
-            $attributeValues = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-
-            return $attributeValues;
-        } catch (\Exception $e) {
-            return [
-                'error' => 'Failed to fetch attributes: ' . $e->getMessage()
-            ];
-        }
+        return parent::getAttributeValuesByAttributeId($attributeId, $productId);
     }
 }

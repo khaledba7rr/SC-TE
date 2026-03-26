@@ -18,7 +18,7 @@ export const productsQuery = gql`
         }
         images {
           id
-          url
+          image_url
         }
         attributes {
           id
@@ -63,7 +63,7 @@ export const singleProductQuery = gql`
       images {
         id
         product_id
-        url
+        image_url
       }
       attributes {
         id
@@ -110,7 +110,7 @@ export const productsByCategoryQuery = gql`
         id
         label
         product_id
-        url
+        image_url
       }
     }
   }

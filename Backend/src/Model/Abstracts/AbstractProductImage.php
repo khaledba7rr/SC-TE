@@ -4,20 +4,34 @@ declare(strict_types=1);
 
 namespace Backend\Model\Abstracts;
 
-use Backend\Database\DatabaseConnectionFactory;
 use PDO;
+use Backend\Model\Abstracts\AbstractPDO;
+use Backend\Model\Constants;
 
-/**
- * Base class representing a value for a product image.
- */
-abstract class AbstractProductImage
+abstract class AbstractProductImage extends AbstractPDO
 {
-    protected PDO $pdo;
-
-    public function __construct()
+    public function __construct(PDO $pdo)
     {
-        $this->pdo = DatabaseConnectionFactory::createConnection();
+        parent::__construct($pdo);
     }
 
-    public abstract function getImagesByProductId(string $productId): array;
+    public function getImagesByProductId(string $productId): array
+    {
+        try {
+            $query = Constants::getProductImagesByProductIdQuery();
+            $stmt = $this->execute($query, [':id' => $productId]);
+
+            if (!$stmt) {
+                error_log("Failed to execute query for product ID: $productId");
+                return [];
+            }
+
+            $images = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+            return $images ?: [];
+        } catch (\Throwable $e) {
+            error_log("Error fetching images for product ID $productId: " . $e->getMessage());
+            return [];
+        }
+    }
 }

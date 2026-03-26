@@ -7,10 +7,11 @@ import Category from '../../types/category';
 
 import { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
-
+import { useDispatch } from 'react-redux';
 import Loading from '../../components/loading/loading';
 import { useParams } from 'react-router-dom';
 import { getCategoryObjectByName } from '../../constants/helpers';
+import { setAllProducts } from '../../store/cart-slice';
 
 interface ProductsListingProps {
   currentCategory?: Category;
@@ -25,11 +26,11 @@ const ProductsListingPage: React.FC<ProductsListingProps> = ({
   const [isError, setIsError] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { categoryName } = useParams<{ categoryName: string }>();
-
   const handleSetError = (value: boolean) => {
     setIsError(value);
   };
 
+  const dispatch = useDispatch();
   const handleSetLoading = (value: boolean) => {
     setIsLoading(value);
   };
@@ -64,8 +65,11 @@ const ProductsListingPage: React.FC<ProductsListingProps> = ({
 
     const allProducts: Product[] = data.productsByCategoryId || [];
 
-    handleProductsChange(allProducts);
+    if (currentCategoryBasedOnPath.name === 'all') {
+      dispatch(setAllProducts(allProducts));
+    }
 
+    handleProductsChange(allProducts);
     handleSetLoading(false);
   }, [
     data,

@@ -4,22 +4,24 @@ declare(strict_types=1);
 
 namespace Backend\Model\Abstracts;
 
-use Backend\Database\DatabaseConnectionFactory;
+use Backend\Model\Abstracts\AbstractPDO;
+use Backend\Model\Constants;
 use PDO;
 
-/**
- * AbstractAttributeValue
- *
- * Base class representing a value for a named attribute.
- */
-abstract class AbstractAttributeValue
+abstract class AbstractAttributeValue extends AbstractPDO
 {
-    protected PDO $pdo;
-
-    public function __construct()
+    public function __construct(PDO $pdo)
     {
-        $this->pdo = DatabaseConnectionFactory::createConnection();
+        parent::__construct($pdo);
     }
 
-    public abstract function getAttributeValuesByAttributeId(int $attributeId, string $productId);
+    protected function getAttributeValuesByAttributeId(int $attributeId, string $productId) : array
+    {
+        $query = Constants::getAttributeValuesByAttributeIdQuery();
+        $stmt = $this->execute($query, [':id' => $attributeId, ':product_id' => $productId]);
+
+        $attributeValues = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        return $attributeValues;
+    }
 }

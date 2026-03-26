@@ -20,6 +20,13 @@ class QueryType extends ObjectType
                     'type' => Type::listOf($categoryType),
                     'resolve' => fn() => $resolvers['categoryResolver']->getAllCategories(),
                 ],
+                'categoryById' => [
+                    'type' => $categoryType,
+                    'args' => [
+                        'id' => Type::nonNull(Type::id()),
+                    ],
+                    'resolve' => fn($root, $args) => $resolvers['categoryResolver']->getCategoryById($args['id']),
+                ],
                 'product' => [
                     'type' => $productType,
                     'args' => [

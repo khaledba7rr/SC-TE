@@ -15,6 +15,7 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+  
   const { price, symbol } = product.prices[0];
 
   const [isImageLoaded, setIsImageLoaded] = useState<boolean>(false);
@@ -33,7 +34,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     let productToAddToCart: ProductDataSelection = {
       productId: product.id,
       quantity: 1,
-      singleItemPrice: product.prices[0].price,
+      price: price,
       attributes: attributesWithFirstAttributeValue,
     };
 
@@ -42,7 +43,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         attributes: [],
         productId: product.id,
         quantity: 1,
-        singleItemPrice: product.prices[0]?.price,
+        price: price,
       };
     }
 
@@ -65,7 +66,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             )}
             <img
               onLoad={() => setIsImageLoaded(true)}
-              src={product.images[0].url}
+              src={product.images[0].image_url}
               className="card-img-top"
               alt={product.name}
             />

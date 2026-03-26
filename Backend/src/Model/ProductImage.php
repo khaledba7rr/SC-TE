@@ -3,29 +3,19 @@
 namespace Backend\Model;
 
 
-use Backend\Database\DatabaseConnectionFactory;
 use Backend\Model\Abstracts\AbstractProductImage;
+use PDO;
 
 class ProductImage extends AbstractProductImage
 {
 
-    public function __construct()
+    public function __construct(PDO $pdo)
     {
-        $this->pdo = DatabaseConnectionFactory::createConnection();
+        parent::__construct($pdo);
     }
 
     public function getImagesByProductId(string $id): array
     {
-        try {
-            $query = "SELECT image_url as url, id, product_id FROM product_images WHERE product_id = :id";
-            $stmt = $this->pdo->prepare($query);
-            $stmt->bindParam(':id', $id);
-            $stmt->execute();
-
-            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
-        } catch (\Throwable $e) {
-            echo "Error: " . $e->getMessage();
-            return [];
-        }
+        return parent::getImagesByProductId($id);
     }
 }

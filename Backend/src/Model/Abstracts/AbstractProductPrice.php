@@ -4,20 +4,28 @@ declare(strict_types=1);
 
 namespace Backend\Model\Abstracts;
 
-use Backend\Database\DatabaseConnectionFactory;
 use PDO;
+use Backend\Model\Abstracts\AbstractPDO;
+use Backend\Model\Constants;
 
-/**
- * Base class representing a value for a Product Price.
- */
-abstract class AbstractProductPrice
+abstract class AbstractProductPrice extends AbstractPDO
 {
-    protected PDO $pdo;
-
-    public function __construct()
+    public function __construct(PDO $pdo)
     {
-        $this->pdo = DatabaseConnectionFactory::createConnection();
+        parent::__construct($pdo);
     }
 
-    public abstract function getPricesByProductId(string $productId);
+    public function getPricesByProductId(string $productId)
+    {
+        try {
+
+            $query = Constants::getProductPricesByProductIdQuery();
+            $stmt = $this->execute($query, [':id' => $productId]);
+
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\Throwable $e) {
+            echo "Error: " . $e->getMessage();
+            return [];
+        }
+    }
 }

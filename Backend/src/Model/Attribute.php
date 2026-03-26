@@ -2,46 +2,18 @@
 
 namespace Backend\Model;
 
-use Backend\Database\DatabaseConnectionFactory;
 use Backend\Model\Abstracts\AbstractAttribute;
 
 class Attribute extends AbstractAttribute
 {
 
-    public function __construct()
+    public function __construct(\PDO $pdo, AttributeValue $attributeValue)
     {
-        $this->pdo = DatabaseConnectionFactory::createConnection();
+        parent::__construct($pdo, $attributeValue);
     }
 
     public function getAttributesByProductId($id)
     {
-
-        try {
-            $query = "SELECT a.id, a.type, a.name, pa.product_id  , COUNT(*) AS attribute_count
-              FROM attributes a 
-              INNER JOIN product_attributes pa 
-              ON a.id = pa.attribute_id 
-              WHERE pa.product_id = :id
-              GROUP BY pa.attribute_id";
-
-            $stmt = $this->pdo->prepare($query);
-            $stmt->bindParam(':id', $id);
-            $stmt->execute();
-
-            $attributesData = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-
-            $attributeValueObject = new AttributeValue();
-
-            foreach ($attributesData as &$attribute) {
-                // Nested resolution for attribute values
-                $attribute['values'] = $attributeValueObject->getAttributeValuesByAttributeId($attribute['id'], $id);
-            }
-
-            return $attributesData;
-        } catch (\Exception $e) {
-            return [
-                'error' => 'Failed to fetch attributes: ' . $e->getMessage()
-            ];
-        }
+        return parent::getAttributesByProductId($id);
     }
 }

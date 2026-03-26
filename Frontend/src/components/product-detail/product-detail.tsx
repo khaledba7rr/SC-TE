@@ -30,7 +30,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
   };
 
   const [currentImageUrl, setCurrentImageUrl] = useState<string>(
-    product?.images?.[0]?.url ?? ''
+    product?.images?.[0]?.image_url ?? ''
   );
   const [isImageLoaded, setIsImageLoaded] = useState<boolean>(false);
   const [productSelection, setProductSelection] = useState<
@@ -48,7 +48,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
         attributes: [],
         productId: product.id,
         quantity: 1,
-        singleItemPrice: product.prices[0]?.price,
+        price: price,
       };
     }
 
@@ -79,7 +79,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
         productId: product.id,
         quantity: 1,
         attributes: [{ attribute_id: attributeId, value_id: valueId }],
-        singleItemPrice: price,
+        price: price,
       };
       setProductSelection(newProductSelection);
 
@@ -122,25 +122,25 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
 
   const handleCarouselClick = (direction: 'next' | 'previous') => {
     const currentImageIndex = product.images.findIndex(
-      (img) => img.url === currentImageUrl
+      (img) => img.image_url === currentImageUrl
     );
 
     if (direction === 'next') {
       if (currentImageIndex === product.images.length - 1) {
-        setCurrentImageUrl(product.images[0].url);
+        setCurrentImageUrl(product.images[0].image_url);
         return;
       }
 
-      setCurrentImageUrl(product.images[currentImageIndex + 1].url);
+      setCurrentImageUrl(product.images[currentImageIndex + 1].image_url);
     }
 
     if (direction === 'previous') {
       if (currentImageIndex === 0) {
-        setCurrentImageUrl(product.images[product.images.length - 1].url);
+        setCurrentImageUrl(product.images[product.images.length - 1].image_url);
         return;
       }
 
-      setCurrentImageUrl(product.images[currentImageIndex - 1].url);
+      setCurrentImageUrl(product.images[currentImageIndex - 1].image_url);
     }
   };
 
@@ -159,13 +159,13 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
               {product.images &&
                 product.images.map((image) => (
                   <div
-                    key={image.url}
-                    className={`sinlge-thumb-container ${image.url === currentImageUrl && 'selected'} thumb-image m-1`}
-                    onClick={() => setCurrentImageUrl(image.url)}
+                    key={image.image_url}
+                    className={`sinlge-thumb-container ${image.image_url === currentImageUrl && 'selected'} thumb-image m-1`}
+                    onClick={() => setCurrentImageUrl(image.image_url)}
                   >
                     {!isImageLoaded && <Loading />}
                     <img
-                      src={image.url}
+                      src={image.image_url}
                       alt={product.name}
                       onLoad={() => setIsImageLoaded(true)}
                       className="image"

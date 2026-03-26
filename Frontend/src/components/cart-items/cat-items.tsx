@@ -27,9 +27,7 @@ const CartItems: React.FC<{ itemsLength: number }> = ({ itemsLength }) => {
   const itemsTotal = cartItems.reduce(
     (acc, item) =>
       acc +
-      item.quantity *
-        (allProducts?.find((product) => product.id === item.productId)
-          ?.prices[0].price ?? 0),
+      item.quantity * item.price,
     0
   );
 
@@ -153,7 +151,7 @@ const CartItems: React.FC<{ itemsLength: number }> = ({ itemsLength }) => {
                     <img
                       className=""
                       alt="product"
-                      src={product?.images[0].url}
+                      src={product?.images[0].image_url}
                     />
                   </div>
                 </div>

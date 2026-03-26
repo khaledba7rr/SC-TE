@@ -5,42 +5,22 @@ namespace Backend\Model;
 
 
 use Backend\Model\Abstracts\AbstractCategory;
-use Backend\Database\DatabaseConnectionFactory;
-use Backend\Model\Product;
+use PDO;
 
 class Category extends AbstractCategory
 {
-
-    public function __construct()
+    public function __construct(PDO $pdo)
     {
-        $this->pdo = DatabaseConnectionFactory::createConnection();
+        parent::__construct($pdo);
     }
 
     public function getAllCategories()
     {
-
-        $query = "SELECT * FROM categories";
-        $stmt = $this->pdo->prepare($query);
-        $stmt->execute();
-
-        $categoreis = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-
-        $productObject = new Product();
-
-        foreach ($categoreis as &$category) {
-            // Nested resolution for products
-            $category['products'] = $productObject->getProductsByCategoryId($category['id']);
-        }
-
-        return $categoreis;
+        return parent::getAllCategories();
     }
-    public function getCategoryById(string $id)
-    {
-        $query = "SELECT * FROM categories WHERE id = :id";
-        $stmt = $this->pdo->prepare($query);
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
 
-        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    public function getCategoryById(int $id): ?array
+    {
+        return parent::getCategoryById($id);
     }
 }

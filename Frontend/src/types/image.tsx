@@ -1,6 +1,6 @@
 type Image = {
   id: number;
-  url: string;
+  image_url: string;
 };
 
 export default Image;

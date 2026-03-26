@@ -6,11 +6,11 @@ use Backend\Model\Order;
 
 class OrderResolver
 {
-    private $order;
+    private Order $order;
 
-    public function __construct()
+    public function __construct(Order $order)
     {
-        $this->order = new Order();
+        $this->order = $order;
     }
 
     public function getAllOrders()

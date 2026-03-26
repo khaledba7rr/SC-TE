@@ -2,15 +2,16 @@
 
 namespace Backend\GraphqlConfig\Resolvers;
 
+use Backend\Model\Category;
 use Backend\Model\Product;
 
 class ProductResolver
 {
     private $product;
 
-    public function __construct()
+    public function __construct(Product $product)
     {
-        $this->product = new Product();
+        $this->product = $product;
     }
 
     public function getAllProducts()
