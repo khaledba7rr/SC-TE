@@ -66,7 +66,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             )}
             <img
               onLoad={() => setIsImageLoaded(true)}
-              src={product.images[0].image_url}
+              src={product.images[0].url}
               className="card-img-top"
               alt={product.name}
             />

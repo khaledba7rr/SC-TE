@@ -30,7 +30,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
   };
 
   const [currentImageUrl, setCurrentImageUrl] = useState<string>(
-    product?.images?.[0]?.image_url ?? ''
+    product?.images?.[0]?.url ?? ''
   );
   const [isImageLoaded, setIsImageLoaded] = useState<boolean>(false);
   const [productSelection, setProductSelection] = useState<
@@ -122,25 +122,25 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
 
   const handleCarouselClick = (direction: 'next' | 'previous') => {
     const currentImageIndex = product.images.findIndex(
-      (img) => img.image_url === currentImageUrl
+      (img) => img.url === currentImageUrl
     );
 
     if (direction === 'next') {
       if (currentImageIndex === product.images.length - 1) {
-        setCurrentImageUrl(product.images[0].image_url);
+        setCurrentImageUrl(product.images[0].url);
         return;
       }
 
-      setCurrentImageUrl(product.images[currentImageIndex + 1].image_url);
+      setCurrentImageUrl(product.images[currentImageIndex + 1].url);
     }
 
     if (direction === 'previous') {
       if (currentImageIndex === 0) {
-        setCurrentImageUrl(product.images[product.images.length - 1].image_url);
+        setCurrentImageUrl(product.images[product.images.length - 1].url);
         return;
       }
 
-      setCurrentImageUrl(product.images[currentImageIndex - 1].image_url);
+      setCurrentImageUrl(product.images[currentImageIndex - 1].url);
     }
   };
 
@@ -159,13 +159,13 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
               {product.images &&
                 product.images.map((image) => (
                   <div
-                    key={image.image_url}
-                    className={`sinlge-thumb-container ${image.image_url === currentImageUrl && 'selected'} thumb-image m-1`}
-                    onClick={() => setCurrentImageUrl(image.image_url)}
+                    key={image.url}
+                    className={`sinlge-thumb-container ${image.url === currentImageUrl && 'selected'} thumb-image m-1`}
+                    onClick={() => setCurrentImageUrl(image.url)}
                   >
                     {!isImageLoaded && <Loading />}
                     <img
-                      src={image.image_url}
+                      src={image.url}
                       alt={product.name}
                       onLoad={() => setIsImageLoaded(true)}
                       className="image"
