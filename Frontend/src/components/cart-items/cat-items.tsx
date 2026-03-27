@@ -151,7 +151,7 @@ const CartItems: React.FC<{ itemsLength: number }> = ({ itemsLength }) => {
                     <img
                       className=""
                       alt="product"
-                      src={product?.images[0].image_url}
+                      src={product?.images[0].url}
                     />
                   </div>
                 </div>
