@@ -16,7 +16,7 @@ This is the frontend of the Scandiweb Fullstack E-commerce Application. Built wi
 
 ```bash
 
-git clone https://github.com/yourusername/frontend.git
+git clone https://github.com/khaledba7rr/frontend.git
 cd frontend
 
 ```
